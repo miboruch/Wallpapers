@@ -3,7 +3,7 @@ import {
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS
-} from '../types/categoryImagesActions';
+} from '../types/categoryImagesActionTypes';
 
 interface DefaultState {
   loading: boolean;

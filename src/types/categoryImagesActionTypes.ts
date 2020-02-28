@@ -8,7 +8,7 @@ export interface FetchStart {
 
 export interface FetchSuccess {
   type: typeof FETCH_SUCCESS;
-  payload: [];
+  payload: any[];
 }
 
 export interface FetchError {
