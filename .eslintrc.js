@@ -28,6 +28,7 @@ module.exports = {
     'no-undef': 'warn',
     'no-unused-vars': 'off',
     'no-unused-expressions': 'off',
-    'react-hooks/exhaustive-deps': 'off'
+    'react-hooks/exhaustive-deps': 'off',
+    'react/prop-types': 'off'
   }
 };
