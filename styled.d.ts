@@ -19,5 +19,12 @@ declare module 'styled-components' {
       background: string;
       main: string;
     };
+    mq: {
+      mobileL: string;
+      tabletS: string;
+      tablet: string;
+      standard: string;
+      desktop: string;
+    };
   }
 }

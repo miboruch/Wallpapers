@@ -6,6 +6,11 @@ interface Category {
 
 export const categoryQueries: Category[] = [
   {
+    title: 'Nature',
+    description: 'One touch of nature makes the whole world kin.',
+    id: 1535201
+  },
+  {
     title: 'Leaves',
     description:
       'Spring had come and the leaves clothed the naked trees, it was truly the most beautiful fabric.',
@@ -15,11 +20,6 @@ export const categoryQueries: Category[] = [
     title: 'Above',
     description: 'Image collection which provide a highly detailed look at everything from above',
     id: 1030778
-  },
-  {
-    title: 'Nature',
-    description: 'One touch of nature makes the whole world kin.',
-    id: 1535201
   },
   {
     title: 'Abstract',

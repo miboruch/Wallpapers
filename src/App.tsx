@@ -2,22 +2,32 @@ import React from 'react';
 import styled from 'styled-components';
 import './App.css';
 import Layout from './components/Layout';
+import LandingPage from './pages/LandingPage';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 interface StyledWrapperProps {
   isLogged: boolean;
 }
 
 const StyledWrapper = styled.div<StyledWrapperProps>`
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100vh;
+  border: 0;
   background-color: ${({ theme }) => theme.colors.main};
   color: ${({ isLogged }) => (isLogged ? 'yellow' : 'blue')};
+  overflow: hidden;
 `;
 
 function App() {
   return (
     <Layout>
-      <StyledWrapper isLogged={true}>hello friend</StyledWrapper>
+      <StyledWrapper isLogged={true}>
+        <Router>
+          <Switch>
+            <Route path='/' exact component={LandingPage} />
+          </Switch>
+        </Router>
+      </StyledWrapper>
     </Layout>
   );
 }
