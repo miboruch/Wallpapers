@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import Slider from 'react-slick';
-
-interface Props {}
+import { AppState } from '../../../reducers/rootReducer';
+import Button from '../../atoms/Button/Button';
+import ImageContent from '../ImageContent/ImageContent';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -15,7 +17,12 @@ const StyledSlider = styled(Slider)`
   z-index: 0;
 `;
 
-const ImageCategorySlider: React.FC<Props> = () => {
+interface Props {}
+
+type ConnectedProps = Props & LinkStateProps;
+
+const ImageCategorySlider: React.FC<ConnectedProps> = ({ categoryImages }) => {
+  console.log(categoryImages);
   const settings = {
     dots: false,
     infinite: true,
@@ -24,17 +31,27 @@ const ImageCategorySlider: React.FC<Props> = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     cssEase: 'cubic-bezier(.84, 0, .08, .99)'
-    // beforeChange: (oldIndex, nextSlide) => setSlide(nextSlide),
-    // afterChange: current => setSlide(current)
   };
 
   return (
     <StyledWrapper>
       <StyledSlider {...settings}>
-        /* map images, categories and descriptions fetched from redux action */
+        {categoryImages.map(item => (
+          <ImageContent imageUrl={item.hits.previewURL} />
+        ))}
       </StyledSlider>
     </StyledWrapper>
   );
 };
 
-export default ImageCategorySlider;
+interface LinkStateProps {
+  categoryImages: any[];
+}
+
+const mapStateToProps = ({
+  categoryImagesReducer: { categoryImages }
+}: AppState): LinkStateProps => {
+  return { categoryImages };
+};
+
+export default connect(mapStateToProps)(ImageCategorySlider);

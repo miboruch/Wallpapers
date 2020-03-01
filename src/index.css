@@ -1,3 +1,6 @@
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
+
 @font-face {
   font-family: 'Avanti';
   src: local('Avanti'), url('./fonts/AvantiBold.woff') format('woff');
@@ -21,4 +24,3 @@
   src: url('./fonts/FuturaPT-Light.woff') format('woff');
   font-weight: 200;
 }
-

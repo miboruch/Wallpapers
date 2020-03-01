@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { AppState } from '../reducers/rootReducer';
+import { ThunkDispatch } from 'redux-thunk';
+import { AppActions } from '../types/actionTypes';
+import { fetchCategoryImages } from '../actions/categoryImagesAction';
+import { bindActionCreators } from 'redux';
 import Button from '../components/atoms/Button/Button';
-
-interface Props {}
+import ImageCategorySlider from '../components/molecules/ImageCategorySlider/ImageCategorySlider';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -31,17 +36,50 @@ const ButtonWrapper = styled.div`
   left: 0;
 `;
 
-const LandingPage: React.FC<Props> = () => {
+interface Props {}
+
+type ConnectedProps = Props & LinkDispatchProps & LinkStateProps;
+
+const LandingPage: React.FC<ConnectedProps> = ({ fetchCategory, loading }) => {
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
   return (
     <StyledWrapper>
-      <StyledHeader>
-        <StyledTitle>Choose category</StyledTitle>
-      </StyledHeader>
-      <ButtonWrapper>
-        <Button text={'Open images'} />
-      </ButtonWrapper>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <StyledHeader>
+            <StyledTitle>Choose category</StyledTitle>
+          </StyledHeader>
+          <ImageCategorySlider />
+          <ButtonWrapper>
+            <Button text={'Open images'} />
+          </ButtonWrapper>
+        </>
+      )}
     </StyledWrapper>
   );
 };
 
-export default LandingPage;
+interface LinkStateProps {
+  loading: boolean;
+}
+
+interface LinkDispatchProps {
+  fetchCategory: () => void;
+}
+
+const mapStateToProps = ({ categoryImagesReducer: { loading } }: AppState): LinkStateProps => {
+  return { loading };
+};
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
+  return {
+    fetchCategory: bindActionCreators(fetchCategoryImages, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

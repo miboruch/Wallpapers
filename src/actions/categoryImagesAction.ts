@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { AppActions } from '../types/actionTypes';
-import { FETCH_ERROR, FETCH_START, FETCH_SUCCESS } from '../types/categoryImagesActionTypes';
+import { AppActions } from '../types/actionTypes'; /* All possible actions */
+import {
+  FETCH_ERROR,
+  FETCH_START,
+  FETCH_CATEGORIES_SUCCESS,
+  FETCH_IMAGES_SUCCESS
+} from '../types/categoryImagesActionTypes';
 import { categoryQueries } from '../utils/imagesCategories';
 import { API_URL } from '../utils/constants';
 
@@ -11,9 +16,16 @@ const fetchStart = (): AppActions => {
   };
 };
 
-const fetchSuccess = (result: any[]): AppActions => {
+const fetchCategoriesSuccess = (result: any[]): AppActions => {
   return {
-    type: FETCH_SUCCESS,
+    type: FETCH_CATEGORIES_SUCCESS,
+    payload: result
+  };
+};
+
+const fetchImagesSuccess = (result: any[]): AppActions => {
+  return {
+    type: FETCH_IMAGES_SUCCESS,
     payload: result
   };
 };
@@ -32,14 +44,15 @@ export const fetchCategoryImages = () => (dispatch: Dispatch<AppActions>) => {
   try {
     let resultObject: any[] = [];
     categoryQueries.map(async ({ title, description, id }) => {
-      const { hits } = await axios.get(
-        `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&id=${id}`
-      );
+      const {
+        data: { hits }
+      } = await axios.get(`${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&id=${id}`);
 
-      resultObject = [...resultObject, { query: title, description, hits }];
+      resultObject = [...resultObject, { title, description, hits: hits[0] }];
+
+      /* fix this, not the best way to do it */
+      dispatch(fetchCategoriesSuccess(resultObject));
     });
-
-    dispatch(fetchSuccess(resultObject));
   } catch (error) {
     dispatch(fetchError(error));
   }
