@@ -13,8 +13,8 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
   width: 100%;
   height: 100vh;
   border: 0;
-  background-color: ${({ theme }) => theme.colors.main};
-  color: ${({ isLogged }) => (isLogged ? 'yellow' : 'blue')};
+  background-color: ${({ theme }) => theme.colors.lightBlue};
+  color: #fff;
   overflow: hidden;
 `;
 

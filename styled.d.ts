@@ -16,8 +16,10 @@ declare module 'styled-components' {
       };
     };
     colors: {
-      background: string;
-      main: string;
+      red: string;
+      lightBlue: string;
+      blue: string;
+      darkBlue: string;
     };
     mq: {
       mobileL: string;

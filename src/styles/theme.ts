@@ -15,8 +15,10 @@ export const theme: DefaultTheme = {
     }
   },
   colors: {
-    background: '#000',
-    main: '#2d2d2d'
+    red: '#cb6e61',
+    lightBlue: '#a3a9b2',
+    blue: '#3e4561',
+    darkBlue: '#192c48'
   },
   mq: {
     mobileL: '@media all and (min-width: 370px)',
