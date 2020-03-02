@@ -9,88 +9,71 @@ import { bindActionCreators } from 'redux';
 import Button from '../components/atoms/Button/Button';
 import ImageCategorySlider from '../components/molecules/ImageCategorySlider/ImageCategorySlider';
 
+interface BackgroundImage {
+  imageUrl: string;
+}
+
 const StyledWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
-`;
-
-const StyledHeader = styled.header`
-  width: 100%;
-  height: 60px;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
-  position: fixed;
-  top: 2rem;
-  left: 0;
-  margin-top: 2rem;
-  z-index: 2;
-`;
+  flex-direction: row;
 
-const StyledTitle = styled.p`
-  font-size: ${({ theme }) => theme.font.size.m};
-  font-weight: 500;
-`;
-
-const ButtonWrapper = styled.div`
-  width: 100%;
-  position: absolute;
-  bottom: 1rem;
-  left: 0;
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: ${({ theme }) => theme.colors.darkBlue};
+    background-position: 10% 10%;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
 `;
 
 const SliderWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
+
+  ${({ theme }) => theme.mq.standard} {
+    width: 65%;
+    overflow: hidden;
+  }
 `;
 
 interface Props {}
 
-type ConnectedProps = Props & LinkDispatchProps & LinkStateProps;
+type ConnectedProps = Props & LinkStateProps;
 
-const LandingPage: React.FC<ConnectedProps> = ({ fetchCategory, loading }) => {
-  useEffect(() => {
-    // fetchCategory();
-  }, []);
-
+const LandingPage: React.FC<ConnectedProps> = ({ loading, categoryImages }) => {
   return (
-    <StyledWrapper>
+    <>
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <>
-          <StyledHeader>
-            <StyledTitle>Choose category</StyledTitle>
-          </StyledHeader>
+        <StyledWrapper>
           <SliderWrapper>
             <ImageCategorySlider />
           </SliderWrapper>
-          <ButtonWrapper>
-            <Button text={'Open images'} />
-          </ButtonWrapper>
-        </>
+        </StyledWrapper>
       )}
-    </StyledWrapper>
+    </>
   );
 };
 
 interface LinkStateProps {
   loading: boolean;
+  categoryImages: any[];
 }
 
-interface LinkDispatchProps {
-  fetchCategory: () => void;
-}
-
-const mapStateToProps = ({ categoryImagesReducer: { loading } }: AppState): LinkStateProps => {
-  return { loading };
+const mapStateToProps = ({
+  categoryImagesReducer: { loading, categoryImages }
+}: AppState): LinkStateProps => {
+  return { loading, categoryImages };
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
-  return {
-    fetchCategory: bindActionCreators(fetchCategoryImages, dispatch)
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
+export default connect(mapStateToProps)(LandingPage);

@@ -14,9 +14,10 @@ const StyledButton = styled.button`
   font-family: ${({ theme }) => theme.font.family.avanti};
   letter-spacing: 1px;
   border: none;
-  border-radius: 20px;
+  border-top-right-radius: 20px;
   cursor: pointer;
   text-transform: uppercase;
+  outline: none;
 `;
 
 const Button: React.FC<Props> = ({ text, onClick }) => {

@@ -1,35 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import './App.css';
+import { connect } from 'react-redux';
 import Layout from './components/Layout';
 import LandingPage from './pages/LandingPage';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CurrentSlideContextProvider from './providers/CurrentSlideContext';
+import { ThunkDispatch } from 'redux-thunk';
+import { AppActions } from './types/actionTypes';
+import { bindActionCreators } from 'redux';
+import { fetchCategoryImages } from './actions/categoryImagesAction';
 
-interface StyledWrapperProps {
-  isLogged: boolean;
-}
+const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
+  useEffect(() => {
+    // fetchCategory();
+  }, []);
 
-const StyledWrapper = styled.div<StyledWrapperProps>`
-  width: 100%;
-  height: 100vh;
-  border: 0;
-  background-color: ${({ theme }) => theme.colors.lightBlue};
-  color: #fff;
-  overflow: hidden;
-`;
-
-function App() {
   return (
-    <Layout>
-      <StyledWrapper isLogged={true}>
+    <CurrentSlideContextProvider>
+      <Layout>
         <Router>
           <Switch>
             <Route path='/' exact component={LandingPage} />
           </Switch>
         </Router>
-      </StyledWrapper>
-    </Layout>
+      </Layout>
+    </CurrentSlideContextProvider>
   );
+};
+
+interface LinkDispatchProps {
+  fetchCategory: () => void;
 }
 
-export default App;
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
+  return {
+    fetchCategory: bindActionCreators(fetchCategoryImages, dispatch)
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);
