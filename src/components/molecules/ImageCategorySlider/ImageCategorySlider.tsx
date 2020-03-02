@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Slider from 'react-slick';
@@ -16,25 +16,6 @@ const StyledWrapper = styled.div`
   position: relative;
 `;
 
-const StyledHeader = styled.header`
-  width: inherit;
-  height: 60px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: fixed;
-  top: 2rem;
-  left: 0;
-  margin-top: 2rem;
-  z-index: 2;
-`;
-
-const StyledTitle = styled.p`
-  font-size: ${({ theme }) => theme.font.size.m};
-  font-weight: 500;
-  letter-spacing: 2px;
-`;
-
 const StyledSlider = styled(Slider)`
   width: 100%;
   height: 100%;
@@ -44,14 +25,23 @@ const StyledSlider = styled(Slider)`
   ${({ theme }) => theme.mq.standard} {
     border-top-right-radius: 40px;
     border-bottom-right-radius: 40px;
+    -webkit-box-shadow: 11px 8px 20px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 11px 8px 20px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 11px 8px 20px 0px rgba(0, 0, 0, 0.75);
   }
 `;
 
 const ButtonWrapper = styled.div`
   width: 90%;
+  height: 50px;
   position: absolute;
   bottom: 0;
   left: 0;
+
+  ${({ theme }) => theme.mq.standard} {
+    width: 40%;
+    height: 80px;
+  }
 `;
 
 const NavigationWrapper = styled.section`
@@ -115,27 +105,15 @@ const ImageCategorySlider: React.FC<ConnectedProps> = ({ categoryImages }) => {
   return (
     <StyledWrapper>
       <StyledSlider {...settings} ref={sliderRef}>
-        {/*{categoryImages.map(item => (*/}
-        {/*  <ImageContent*/}
-        {/*    imageUrl={item.hits.largeImageURL}*/}
-        {/*    key={item.hits.id}*/}
-        {/*    title={item.title}*/}
-        {/*    description={item.description}*/}
-        {/*  />*/}
-        {/*))}*/}
-
-        {categoryQueries.map(item => (
+        {categoryImages.map(item => (
           <ImageContent
-            imageUrl='https://pixabay.com/get/57e5d6464852ad14f6da8c7dda79367d1038d9ed53546c48702778d49145c05fb1_1280.jpg'
+            imageUrl={item.hits.largeImageURL}
+            key={item.hits.id}
             title={item.title}
             description={item.description}
-            key={item.title}
           />
         ))}
       </StyledSlider>
-      <StyledHeader>
-        <StyledTitle>Choose category</StyledTitle>
-      </StyledHeader>
       <NavigationWrapper>
         <StyledIconLeft src={backIcon} onClick={() => slide(SliderAction.prev)} />
         <StyledIconRight src={backIcon} onClick={() => slide(SliderAction.next)} />

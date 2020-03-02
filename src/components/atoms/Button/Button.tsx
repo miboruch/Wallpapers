@@ -8,7 +8,7 @@ interface Props {
 
 const StyledButton = styled.button`
   width: 100%;
-  height: 50px;
+  height: 100%;
   background: ${({ theme }) => theme.colors.red};
   color: #fff;
   font-family: ${({ theme }) => theme.font.family.avanti};

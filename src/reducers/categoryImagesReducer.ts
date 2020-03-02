@@ -14,7 +14,7 @@ interface DefaultState {
 }
 
 const categoryImagesDefaultState: DefaultState = {
-  loading: false,
+  loading: true,
   categoryImages: [],
   allCategoryImages: [],
   error: null

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import './App.css';
 import { connect } from 'react-redux';
 import Layout from './components/Layout';
@@ -13,7 +12,7 @@ import { fetchCategoryImages } from './actions/categoryImagesAction';
 
 const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
   useEffect(() => {
-    // fetchCategory();
+    fetchCategory();
   }, []);
 
   return (
