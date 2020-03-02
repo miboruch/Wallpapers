@@ -11,7 +11,7 @@ import ImageCategorySlider from '../components/molecules/ImageCategorySlider/Ima
 
 const StyledWrapper = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const StyledHeader = styled.header`
@@ -20,8 +20,11 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  position: relative;
+  position: fixed;
+  top: 2rem;
+  left: 0;
   margin-top: 2rem;
+  z-index: 2;
 `;
 
 const StyledTitle = styled.p`
@@ -36,13 +39,19 @@ const ButtonWrapper = styled.div`
   left: 0;
 `;
 
+const SliderWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100vh;
+`;
+
 interface Props {}
 
 type ConnectedProps = Props & LinkDispatchProps & LinkStateProps;
 
 const LandingPage: React.FC<ConnectedProps> = ({ fetchCategory, loading }) => {
   useEffect(() => {
-    fetchCategory();
+    // fetchCategory();
   }, []);
 
   return (
@@ -54,7 +63,9 @@ const LandingPage: React.FC<ConnectedProps> = ({ fetchCategory, loading }) => {
           <StyledHeader>
             <StyledTitle>Choose category</StyledTitle>
           </StyledHeader>
-          <ImageCategorySlider />
+          <SliderWrapper>
+            <ImageCategorySlider />
+          </SliderWrapper>
           <ButtonWrapper>
             <Button text={'Open images'} />
           </ButtonWrapper>
