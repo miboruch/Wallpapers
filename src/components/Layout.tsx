@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { theme } from '../styles/theme';
 import GlobalStyle from '../styles/GlobalStyle';
+import Search from './molecules/Search/Search';
 
 interface Props {
   appTheme?: string;
@@ -17,10 +18,15 @@ const StyledWrapper = styled.div`
 
 const Layout: React.FC<Props> = ({ appTheme, children }) => {
   return (
-    <StyledWrapper>
+    <>
       <GlobalStyle />
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </StyledWrapper>
+      <ThemeProvider theme={theme}>
+        <StyledWrapper>
+          <Search />
+          {children}
+        </StyledWrapper>
+      </ThemeProvider>
+    </>
   );
 };
 

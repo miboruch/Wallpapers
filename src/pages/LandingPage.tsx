@@ -108,11 +108,11 @@ const StyledDescription = styled.p`
 const StyledParagraph = styled.p<ParagraphProps>`
   font-size: 16px;
   color: #fff;
-  background: ${({ currentSlide, index }) => (currentSlide === index ? '#cb6e61' : 'none')};
+  background-color: ${({ currentSlide, index }) => (currentSlide === index ? '#cb6e61' : 'none')};
   padding: 0.3rem 1rem;
   border-radius: 10px;
-  transition: color 0.5s ease;
   margin-top: 1rem;
+  transition: background-color 0.6s ease;
 `;
 
 const StyledIcon = styled(ReactSVG)`

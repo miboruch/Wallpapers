@@ -9,6 +9,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AppActions } from './types/actionTypes';
 import { bindActionCreators } from 'redux';
 import { fetchCategoryImages } from './actions/categoryImagesAction';
+import PhotosPage from './pages/PhotosPage';
 
 const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
         <Router>
           <Switch>
             <Route path='/' exact component={LandingPage} />
+            <Route path='/photos-page/:query' exact component={PhotosPage} />
           </Switch>
         </Router>
       </Layout>
