@@ -12,7 +12,8 @@ const StyledButton = styled.button`
   background: ${({ theme }) => theme.colors.red};
   color: #fff;
   font-family: ${({ theme }) => theme.font.family.avanti};
-  letter-spacing: 1px;
+  font-size: 14px;
+  letter-spacing: 3px;
   border: none;
   border-top-right-radius: 20px;
   cursor: pointer;

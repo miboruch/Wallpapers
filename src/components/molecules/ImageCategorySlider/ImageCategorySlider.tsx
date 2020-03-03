@@ -93,7 +93,7 @@ const ImageCategorySlider: React.FC<ConnectedProps> = ({ categoryImages }) => {
     dots: false,
     infinite: true,
     autoplay: false,
-    fade: false,
+    fade: true,
     arrows: false,
     speed: 2000,
     slidesToShow: 1,

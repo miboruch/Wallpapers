@@ -10,8 +10,8 @@ interface DefaultSlideContext {
 export const SliderContext = React.createContext<DefaultSlideContext>({
   currentSlide: 0,
   previousSlide: -1,
-  setSlide: () => {},
-  setPreviousSlide: () => {}
+  setSlide: (index: number) => {},
+  setPreviousSlide: (index: number) => {}
 });
 
 const CurrentSlideContextProvider: React.FC<{}> = ({ children }) => {

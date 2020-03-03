@@ -8,8 +8,8 @@ const ButtonWrapper = styled.button`
   background: transparent;
   border: none;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 2rem;
+  right: 2rem;
   margin: 0 0.5rem;
   :focus {
     outline: none;

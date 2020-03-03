@@ -7,6 +7,7 @@ import searchIcon from '../assets/icons/search.svg';
 import ImageCategorySlider from '../components/molecules/ImageCategorySlider/ImageCategorySlider';
 import { SliderContext } from '../providers/CurrentSlideContext';
 import { categoryQueries } from '../utils/imagesCategories';
+import { SearchContext } from '../providers/SearchContext';
 
 interface BackgroundImage {
   imageUrl?: string;
@@ -141,6 +142,7 @@ type ConnectedProps = Props & LinkStateProps;
 
 const LandingPage: React.FC<ConnectedProps> = ({ loading, categoryImages }) => {
   const { currentSlide } = useContext(SliderContext);
+  const { setOpen } = useContext(SearchContext);
 
   return (
     <>
@@ -153,7 +155,7 @@ const LandingPage: React.FC<ConnectedProps> = ({ loading, categoryImages }) => {
               <ImageCategorySlider />
               <StyledHeader>
                 <StyledTitle>Choose category</StyledTitle>
-                <StyledIcon src={searchIcon} />
+                <StyledIcon src={searchIcon} onClick={() => setOpen()} />
               </StyledHeader>
             </SliderWrapper>
             <ContentWrapper>

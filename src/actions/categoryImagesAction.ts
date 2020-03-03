@@ -2,10 +2,11 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AppActions } from '../types/actionTypes'; /* All possible actions */
 import {
-  FETCH_ERROR,
-  FETCH_START,
   FETCH_CATEGORIES_SUCCESS,
-  FETCH_IMAGES_SUCCESS
+  FETCH_ERROR,
+  FETCH_IMAGES_SUCCESS,
+  FETCH_START,
+  SET_CURRENT_QUERY
 } from '../types/categoryImagesActionTypes';
 import { categoryQueries } from '../utils/imagesCategories';
 import { API_URL } from '../utils/constants';
@@ -13,6 +14,13 @@ import { API_URL } from '../utils/constants';
 const fetchStart = (): AppActions => {
   return {
     type: FETCH_START
+  };
+};
+
+export const setCurrentQuery = (query: string): AppActions => {
+  return {
+    type: SET_CURRENT_QUERY,
+    payload: query
   };
 };
 
@@ -53,6 +61,24 @@ export const fetchCategoryImages = () => (dispatch: Dispatch<AppActions>) => {
       /* fix this, not the best way to do it */
       dispatch(fetchCategoriesSuccess(resultObject));
     });
+  } catch (error) {
+    dispatch(fetchError(error));
+  }
+};
+
+export const fetchAllCategoryImages = (query: string, page: number) => async (
+  dispatch: Dispatch<AppActions>
+) => {
+  dispatch(fetchStart());
+
+  try {
+    const {
+      data: { hits }
+    } = await axios.get(
+      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${query}&page=${page}&per_page=20`
+    );
+
+    dispatch(fetchImagesSuccess(hits));
   } catch (error) {
     dispatch(fetchError(error));
   }
