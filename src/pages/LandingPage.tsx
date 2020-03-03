@@ -8,6 +8,7 @@ import ImageCategorySlider from '../components/molecules/ImageCategorySlider/Ima
 import { SliderContext } from '../providers/CurrentSlideContext';
 import { categoryQueries } from '../utils/imagesCategories';
 import { SearchContext } from '../providers/SearchContext';
+import Search from '../components/molecules/Search/Search';
 
 interface BackgroundImage {
   imageUrl?: string;
@@ -150,6 +151,7 @@ const LandingPage: React.FC<ConnectedProps> = ({ loading, categoryImages }) => {
         <p>Loading...</p>
       ) : (
         <>
+          <Search />
           <StyledWrapper imageUrl={categoryImages[currentSlide].hits.largeImageURL}>
             <SliderWrapper>
               <ImageCategorySlider />

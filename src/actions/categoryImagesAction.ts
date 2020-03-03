@@ -1,4 +1,5 @@
 import axios from 'axios';
+import slugify from 'slugify';
 import { Dispatch } from 'redux';
 import { AppActions } from '../types/actionTypes'; /* All possible actions */
 import {
@@ -66,16 +67,18 @@ export const fetchCategoryImages = () => (dispatch: Dispatch<AppActions>) => {
   }
 };
 
-export const fetchAllCategoryImages = (query: string, page: number) => async (
-  dispatch: Dispatch<AppActions>
-) => {
+export const fetchAllCategoryImages = (
+  query: string,
+  page: string[] | string | null | undefined
+) => async (dispatch: Dispatch<AppActions>) => {
   dispatch(fetchStart());
+  const slugifiedQuery = slugify(query);
 
   try {
     const {
       data: { hits }
     } = await axios.get(
-      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${query}&page=${page}&per_page=20`
+      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${slugifiedQuery}&page=${page}&per_page=20`
     );
 
     dispatch(fetchImagesSuccess(hits));

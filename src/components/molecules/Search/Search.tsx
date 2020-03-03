@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import slugify from 'slugify';
 import { Formik, Form } from 'formik';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
+import { RouteComponentProps, withRouter } from 'react-router';
 import CloseButton from '../../atoms/CloseButton/CloseButton';
 import { SearchContext } from '../../../providers/SearchContext';
 import { AppActions } from '../../../types/actionTypes';
@@ -107,11 +109,15 @@ const StyledButton = styled.button`
   }
 `;
 
+interface Props extends RouteComponentProps<any> {}
+
 interface DefaultFormValue {
   query: string;
 }
 
-const Search: React.FC<LinkDispatchProps> = ({ setQuery }) => {
+type ConnectedProps = Props & LinkDispatchProps;
+
+const Search: React.FC<ConnectedProps> = ({ setQuery, history }) => {
   const initialValue: DefaultFormValue = { query: '' };
   const { isOpen, setBoxState } = useContext(SearchContext);
 
@@ -122,6 +128,7 @@ const Search: React.FC<LinkDispatchProps> = ({ setQuery }) => {
         initialValues={initialValue}
         onSubmit={({ query }) => {
           setQuery(query);
+          history.push(`/photos-page/${slugify(query)}?page=1`);
         }}
         validationSchema={QuerySchema}
       >
@@ -157,4 +164,6 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): Link
   };
 };
 
-export default connect(null, mapDispatchToProps)(Search);
+const SearchWithRouter = withRouter(Search);
+
+export default connect(null, mapDispatchToProps)(SearchWithRouter);

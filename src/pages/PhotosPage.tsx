@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { withRouter, RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+import queryString from 'query-string';
 import Button from '../components/atoms/Button/Button';
-
-interface Props {}
+import { ThunkDispatch } from 'redux-thunk';
+import { AppActions } from '../types/actionTypes';
+import { bindActionCreators } from 'redux';
+import { fetchAllCategoryImages, setCurrentQuery } from '../actions/categoryImagesAction';
+import { reverseSlugify } from '../utils/functions';
 
 interface WrapperProps {
   imageUrl: string;
@@ -52,7 +58,20 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const PhotosPage: React.FC<Props> = () => {
+interface Props extends RouteComponentProps<any> {}
+
+type ConnectedProps = Props & LinkDispatchProps;
+
+const PhotosPage: React.FC<ConnectedProps> = ({
+  location,
+  match,
+  setQuery,
+  fetchAllQueryImages
+}) => {
+  useEffect(() => {
+    setQuery(reverseSlugify(match.params.query));
+    fetchAllQueryImages(match.params.query, queryString.parse(location.search).page);
+  }, [match.params.query]);
   return (
     <StyledWrapper
       imageUrl={
@@ -69,4 +88,18 @@ const PhotosPage: React.FC<Props> = () => {
   );
 };
 
-export default PhotosPage;
+interface LinkDispatchProps {
+  setQuery: (query: string) => void;
+  fetchAllQueryImages: (query: string, page: string[] | string | null | undefined) => void;
+}
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
+  return {
+    setQuery: bindActionCreators(setCurrentQuery, dispatch),
+    fetchAllQueryImages: bindActionCreators(fetchAllCategoryImages, dispatch)
+  };
+};
+
+const PhotosPageWithRouter = withRouter(PhotosPage);
+
+export default connect(null, mapDispatchToProps)(PhotosPageWithRouter);

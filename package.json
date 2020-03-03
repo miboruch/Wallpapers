@@ -17,6 +17,7 @@
     "@types/yup": "^0.26.32",
     "axios": "^0.19.2",
     "formik": "^2.1.4",
+    "query-string": "^6.11.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-helmet": "^5.2.1",
@@ -29,6 +30,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
+    "slugify": "^1.4.0",
     "styled-components": "^5.0.1",
     "typescript": "^3.7.5",
     "yup": "^0.28.1"
@@ -55,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "@types/query-string": "^6.3.0",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
     "dotenv": "^8.2.0",
