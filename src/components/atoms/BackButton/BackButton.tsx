@@ -6,20 +6,25 @@ import backIcon from '../../../assets/icons/back.svg';
 interface Props {}
 
 const StyledWrapper = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-bottom-right-radius: 20px;
+  width: 60px;
+  height: 60px;
+  border-bottom-left-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  ${({ theme }) => theme.mq.standard} {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
 `;
 
 const StyledIcon = styled(ReactSVG)`
   fill: #fff;
-  width: 15px;
-  height: 15px;
+  width: 25px;
+  height: 25px;
   transform: translateX(-3px) rotate(180deg);
 `;
 

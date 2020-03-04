@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import Button from '../components/atoms/Button/Button';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppActions } from '../types/actionTypes';
 import { bindActionCreators } from 'redux';
@@ -11,12 +10,12 @@ import { fetchAllCategoryImages, setCurrentQuery } from '../actions/categoryImag
 import { reverseSlugify } from '../utils/functions';
 import { AppState } from '../reducers/rootReducer';
 import ImageCart from '../components/molecules/ImageCart/ImageCart';
+import BackButton from '../components/atoms/BackButton/BackButton';
 
 const StyledWrapper = styled.div`
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   color: #000;
-  overflow-y: scroll;
   position: relative;
   background-color: #f2f2f2;
   backdrop-filter: blur(10px);
@@ -26,6 +25,34 @@ const StyledWrapper = styled.div`
     min-height: 0;
     height: 100vh;
   }
+`;
+
+const StyledContent = styled.div`
+  display: none;
+  position: fixed;
+  top: 50%;
+  right: 2rem;
+  width: 35%;
+  transform: translateY(-50%);
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  ${({ theme }) => theme.mq.standard} {
+    display: flex;
+  }
+`;
+
+const StyledTitle = styled.h1`
+  font-family: ${({ theme }) => theme.font.family.avanti};
+  font-size: 62px;
+  letter-spacing: 5px;
+  color: #2d2d2d;
+  text-align: center;
+`;
+
+const StyledParagraph = styled.p`
+  text-align: center;
 `;
 
 const StyledHeader = styled.header`
@@ -53,8 +80,9 @@ const StyledHeaderParagraph = styled.p`
 
 const StyledContentWrapper = styled.div`
   width: 100%;
+  min-height: 100vh;
   position: relative;
-  overflow-y: scroll;
+  overflow: hidden;
 
   ${({ theme }) => theme.mq.standard} {
     width: 65%;
@@ -69,25 +97,21 @@ const StyledContentWrapper = styled.div`
 
 const StyledImagesWrapper = styled.div`
   width: 100%;
-  min-height: calc(100vh - 200px);
+  height: 100vh;
+  overflow-y: scroll;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: flex-start;
   flex-wrap: wrap;
 `;
 
 const ButtonWrapper = styled.div`
-  width: 90%;
-  height: 50px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-
-  ${({ theme }) => theme.mq.standard} {
-    width: 40%;
-    height: 80px;
-  }
+  width: 70px;
+  height: 70px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
 `;
 
 interface Props extends RouteComponentProps<any> {}
@@ -100,7 +124,8 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   setQuery,
   fetchAllQueryImages,
   allCategoryImages,
-  loading
+  loading,
+  history
 }) => {
   useEffect(() => {
     setQuery(reverseSlugify(match.params.query));
@@ -108,14 +133,21 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   }, [match.params.query]);
   return (
     <StyledWrapper>
+      <ButtonWrapper onClick={() => history.push('/')}>
+        <BackButton />
+      </ButtonWrapper>
+      <StyledContent>
+        <StyledTitle>{match.params.query}</StyledTitle>
+        <StyledParagraph>choose a photo</StyledParagraph>
+      </StyledContent>
       <StyledContentWrapper>
-        <StyledHeader>
-          <StyledHeaderParagraph>{match.params.query}</StyledHeaderParagraph>
-        </StyledHeader>
         {loading ? (
-          <p>Loading...</p>
+          <StyledParagraph>Loading...</StyledParagraph>
         ) : (
           <StyledImagesWrapper>
+            <StyledHeader>
+              <StyledHeaderParagraph>{match.params.query}</StyledHeaderParagraph>
+            </StyledHeader>
             {allCategoryImages.map(item => (
               <ImageCart
                 key={item.id}
@@ -126,9 +158,6 @@ const PhotosPage: React.FC<ConnectedProps> = ({
             ))}
           </StyledImagesWrapper>
         )}
-        <ButtonWrapper>
-          <Button text={'test'} />
-        </ButtonWrapper>
       </StyledContentWrapper>
     </StyledWrapper>
   );
