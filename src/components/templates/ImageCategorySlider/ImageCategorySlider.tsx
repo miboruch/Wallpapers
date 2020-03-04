@@ -5,10 +5,11 @@ import Slider from 'react-slick';
 import { ReactSVG } from 'react-svg';
 import { AppState } from '../../../reducers/rootReducer';
 import Button from '../../atoms/Button/Button';
-import ImageContent from '../ImageContent/ImageContent';
+import ImageContent from '../../molecules/ImageContent/ImageContent';
 import { categoryQueries } from '../../../utils/imagesCategories';
 import { SliderContext } from '../../../providers/CurrentSlideContext';
 import backIcon from '../../../assets/icons/back.svg';
+import { Link } from 'react-router-dom';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -118,9 +119,11 @@ const ImageCategorySlider: React.FC<ConnectedProps> = ({ categoryImages }) => {
         <StyledIconLeft src={backIcon} onClick={() => slide(SliderAction.prev)} />
         <StyledIconRight src={backIcon} onClick={() => slide(SliderAction.next)} />
       </NavigationWrapper>
-      <ButtonWrapper>
-        <Button text={`Open ${categoryQueries[currentSlide].title} images`} />
-      </ButtonWrapper>
+      <Link to={`/photos-page/${categoryImages[currentSlide].title}?page=1`}>
+        <ButtonWrapper>
+          <Button text={`Open ${categoryImages[currentSlide].title} images`} />
+        </ButtonWrapper>
+      </Link>
     </StyledWrapper>
   );
 };

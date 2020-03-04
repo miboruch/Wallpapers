@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../reducers/rootReducer';
 import { ReactSVG } from 'react-svg';
 import searchIcon from '../assets/icons/search.svg';
-import ImageCategorySlider from '../components/molecules/ImageCategorySlider/ImageCategorySlider';
+import ImageCategorySlider from '../components/templates/ImageCategorySlider/ImageCategorySlider';
 import { SliderContext } from '../providers/CurrentSlideContext';
 import { categoryQueries } from '../utils/imagesCategories';
 import { SearchContext } from '../providers/SearchContext';

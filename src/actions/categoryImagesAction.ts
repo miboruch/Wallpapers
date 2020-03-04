@@ -78,8 +78,10 @@ export const fetchAllCategoryImages = (
     const {
       data: { hits }
     } = await axios.get(
-      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${slugifiedQuery}&page=${page}&per_page=20`
+      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${slugifiedQuery}&page=${page}&per_page=21`
     );
+
+    /* Change to per_page=20 */
 
     dispatch(fetchImagesSuccess(hits));
   } catch (error) {

@@ -10,7 +10,7 @@ interface Props {
 
 const StyledWrapper = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   border: 0;
   color: #fff;
   overflow: hidden;
