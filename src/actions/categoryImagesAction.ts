@@ -7,7 +7,8 @@ import {
   FETCH_ERROR,
   FETCH_IMAGES_SUCCESS,
   FETCH_START,
-  SET_CURRENT_QUERY
+  SET_CURRENT_QUERY,
+  SET_TOTAL_IMAGES
 } from '../types/categoryImagesActionTypes';
 import { categoryQueries } from '../utils/imagesCategories';
 import { API_URL } from '../utils/constants';
@@ -36,6 +37,13 @@ const fetchImagesSuccess = (result: any[]): AppActions => {
   return {
     type: FETCH_IMAGES_SUCCESS,
     payload: result
+  };
+};
+
+const setTotalImages = (allImages: number): AppActions => {
+  return {
+    type: SET_TOTAL_IMAGES,
+    payload: allImages
   };
 };
 
@@ -69,21 +77,20 @@ export const fetchCategoryImages = () => (dispatch: Dispatch<AppActions>) => {
 
 export const fetchAllCategoryImages = (
   query: string,
-  page: string[] | string | null | undefined
+  page: string[] | string | number | null | undefined
 ) => async (dispatch: Dispatch<AppActions>) => {
   dispatch(fetchStart());
   const slugifiedQuery = slugify(query);
 
   try {
-    const {
-      data: { hits }
-    } = await axios.get(
-      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${slugifiedQuery}&page=${page}&per_page=18`
+    const { data } = await axios.get(
+      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${slugifiedQuery}&page=${page}&per_page=3`
     );
 
-    /* Change to per_page=20 */
+    /* change to 21 */
 
-    dispatch(fetchImagesSuccess(hits));
+    dispatch(setTotalImages(data.totalHits));
+    dispatch(fetchImagesSuccess(data.hits));
   } catch (error) {
     dispatch(fetchError(error));
   }

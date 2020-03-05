@@ -6,7 +6,6 @@ import { ReactSVG } from 'react-svg';
 import { AppState } from '../../../reducers/rootReducer';
 import Button from '../../atoms/Button/Button';
 import ImageContent from '../../molecules/ImageContent/ImageContent';
-import { categoryQueries } from '../../../utils/imagesCategories';
 import { SliderContext } from '../../../providers/CurrentSlideContext';
 import backIcon from '../../../assets/icons/back.svg';
 import { Link } from 'react-router-dom';

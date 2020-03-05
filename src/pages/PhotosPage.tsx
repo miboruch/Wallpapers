@@ -11,19 +11,29 @@ import { reverseSlugify } from '../utils/functions';
 import { AppState } from '../reducers/rootReducer';
 import ImageCart from '../components/molecules/ImageCart/ImageCart';
 import BackButton from '../components/atoms/BackButton/BackButton';
+import Spinner from '../components/atoms/Spinner/Spinner';
+import PageNavigation from '../components/molecules/PageNavigation/PageNavigation';
 
-const StyledWrapper = styled.div`
+interface WrapperBackgroundProps {
+  imageUrl: string;
+}
+
+const StyledWrapper = styled.div<WrapperBackgroundProps>`
   width: 100%;
   height: 100vh;
   color: #000;
   position: relative;
-  background-color: #f2f2f2;
-  backdrop-filter: blur(10px);
-  background-size: cover;
+  background: none;
 
   ${({ theme }) => theme.mq.standard} {
     min-height: 0;
     height: 100vh;
+    background-image: url(${({ imageUrl }) => imageUrl});
+    background-color: rgba(0, 0, 0, 0.3);
+    background-blend-mode: darken;
+    backdrop-filter: blur(10px);
+    background-size: cover;
+    color: #fff;
   }
 `;
 
@@ -43,11 +53,18 @@ const StyledContent = styled.div`
   }
 `;
 
+const NavigationWrapper = styled.div`
+  width: 200px;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+`;
+
 const StyledTitle = styled.h1`
   font-family: ${({ theme }) => theme.font.family.avanti};
   font-size: 62px;
   letter-spacing: 5px;
-  color: #2d2d2d;
+  color: inherit;
   text-align: center;
 `;
 
@@ -114,9 +131,7 @@ const ButtonWrapper = styled.div`
   z-index: 100;
 `;
 
-interface Props extends RouteComponentProps<any> {}
-
-type ConnectedProps = Props & LinkDispatchProps & LinkStateProps;
+type ConnectedProps = RouteComponentProps<any> & LinkDispatchProps & LinkStateProps;
 
 const PhotosPage: React.FC<ConnectedProps> = ({
   location,
@@ -125,47 +140,61 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   fetchAllQueryImages,
   allCategoryImages,
   loading,
+  query,
   history
 }) => {
   useEffect(() => {
-    setQuery(reverseSlugify(match.params.query));
-    fetchAllQueryImages(match.params.query, queryString.parse(location.search).page);
+    if (match.params.query !== query) {
+      setQuery(reverseSlugify(match.params.query));
+      fetchAllQueryImages(match.params.query, queryString.parse(location.search).page);
+    }
   }, [match.params.query]);
+
   return (
-    <StyledWrapper>
-      <ButtonWrapper onClick={() => history.push('/')}>
-        <BackButton />
-      </ButtonWrapper>
-      <StyledContent>
-        <StyledTitle>{match.params.query}</StyledTitle>
-        <StyledParagraph>choose a photo</StyledParagraph>
-      </StyledContent>
-      <StyledContentWrapper>
-        {loading ? (
-          <StyledParagraph>Loading...</StyledParagraph>
-        ) : (
-          <StyledImagesWrapper>
-            <StyledHeader>
-              <StyledHeaderParagraph>{match.params.query}</StyledHeaderParagraph>
-            </StyledHeader>
-            {allCategoryImages.map(item => (
-              <ImageCart
-                key={item.id}
-                id={item.id}
-                imageUrl={item.webformatURL}
-                title={item.tags}
-              />
-            ))}
-          </StyledImagesWrapper>
-        )}
-      </StyledContentWrapper>
-    </StyledWrapper>
+    <>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <StyledWrapper imageUrl={allCategoryImages[0].largeImageURL}>
+          <ButtonWrapper onClick={() => history.push('/')}>
+            <BackButton />
+          </ButtonWrapper>
+          <StyledContent>
+            <StyledTitle>{match.params.query}</StyledTitle>
+            <StyledParagraph>choose a photo</StyledParagraph>
+          </StyledContent>
+          <StyledContentWrapper>
+            {loading ? (
+              <StyledParagraph>Loading...</StyledParagraph>
+            ) : (
+              <StyledImagesWrapper>
+                <StyledHeader>
+                  <StyledHeaderParagraph>{match.params.query}</StyledHeaderParagraph>
+                </StyledHeader>
+                {allCategoryImages.map(item => (
+                  <ImageCart
+                    key={item.id}
+                    id={item.id}
+                    imageUrl={item.webformatURL}
+                    title={item.tags}
+                  />
+                ))}
+              </StyledImagesWrapper>
+            )}
+          </StyledContentWrapper>
+          <NavigationWrapper>
+            <PageNavigation currentCategory={match.params.query} pageNumber={queryString.parse(location.search).page}/>
+          </NavigationWrapper>
+        </StyledWrapper>
+      )}
+    </>
   );
 };
 
 interface LinkStateProps {
   allCategoryImages: any[];
   loading: boolean;
+  query: string | null;
 }
 
 interface LinkDispatchProps {
@@ -174,9 +203,9 @@ interface LinkDispatchProps {
 }
 
 const mapStateToProps = ({
-  categoryImagesReducer: { allCategoryImages, loading }
+  categoryImagesReducer: { allCategoryImages, loading, query }
 }: AppState): LinkStateProps => {
-  return { allCategoryImages, loading };
+  return { allCategoryImages, loading, query };
 };
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
