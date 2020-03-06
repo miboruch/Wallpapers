@@ -26,6 +26,7 @@ const NavigationWrapper = styled.div`
 
 const StyledParagraph = styled.p`
   font-size: 16px;
+  color: #fff;
 `;
 
 interface HideArrowProps {
@@ -36,7 +37,7 @@ const StyledLinkPrevious = styled(Link)<HideArrowProps>`
   position: absolute;
   top: 0;
   left: 0;
-  color: ${({ hide }) => (hide ? 'yellow' : '#fff')};
+  color: #fff;
   font-size: 16px;
   padding: 0 2rem;
   display: ${({ hide }) => (hide ? 'none' : 'block')};
@@ -66,7 +67,7 @@ const PageNavigation: React.FC<ConnectedProps> = ({
   const hideNext = parseInt(pageNumber) + 1 > Math.ceil(totalImages / 21);
 
   if (prevPage !== page) {
-    fetchAllQueryImages(currentCategory, page);
+    fetchAllQueryImages(currentCategory, page, 3);
     setPrevPage(page);
   }
 
@@ -98,7 +99,7 @@ interface LinkStateProps {
 }
 
 interface LinkDispatchProps {
-  fetchAllQueryImages: (category: string, pageNumber: number) => void;
+  fetchAllQueryImages: (category: string, pageNumber: number, perPage: number | string) => void;
 }
 
 const mapStateToProps = ({ categoryImagesReducer: { totalImages } }: AppState): LinkStateProps => {

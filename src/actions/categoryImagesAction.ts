@@ -77,14 +77,15 @@ export const fetchCategoryImages = () => (dispatch: Dispatch<AppActions>) => {
 
 export const fetchAllCategoryImages = (
   query: string,
-  page: string[] | string | number | null | undefined
+  page: string[] | string | number | null | undefined,
+  perPage: number | string = 21
 ) => async (dispatch: Dispatch<AppActions>) => {
   dispatch(fetchStart());
   const slugifiedQuery = slugify(query);
 
   try {
     const { data } = await axios.get(
-      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${slugifiedQuery}&page=${page}&per_page=3`
+      `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${slugifiedQuery}&page=${page}&per_page=${perPage}`
     );
 
     /* change to 21 */

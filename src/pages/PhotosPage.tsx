@@ -15,7 +15,7 @@ import Spinner from '../components/atoms/Spinner/Spinner';
 import PageNavigation from '../components/molecules/PageNavigation/PageNavigation';
 
 interface WrapperBackgroundProps {
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 const StyledWrapper = styled.div<WrapperBackgroundProps>`
@@ -76,8 +76,7 @@ const StyledHeader = styled.header`
   height: 200px;
   width: 100%;
   border: 2px solid #f2f2f2;
-  background-image: url('https://pixabay.com/get/57e3d0434b55a914f6da8c7dda79367d1038d9ed53546c48702778d7964dcd51b8_1280.jpg');
-  background-color: #f2f2f2;
+  background: rgba(0, 0, 0, 0.2);
   background-blend-mode: darken;
   backdrop-filter: blur(15px);
   display: flex;
@@ -90,7 +89,7 @@ const StyledHeader = styled.header`
 `;
 
 const StyledHeaderParagraph = styled.p`
-  font-size: 32px;
+  font-size: 48px;
   color: inherit;
   letter-spacing: 1px;
 `;
@@ -146,7 +145,7 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   useEffect(() => {
     if (match.params.query !== query) {
       setQuery(reverseSlugify(match.params.query));
-      fetchAllQueryImages(match.params.query, queryString.parse(location.search).page);
+      fetchAllQueryImages(match.params.query, queryString.parse(location.search).page, 3);
     }
   }, [match.params.query]);
 
@@ -172,18 +171,16 @@ const PhotosPage: React.FC<ConnectedProps> = ({
                   <StyledHeaderParagraph>{match.params.query}</StyledHeaderParagraph>
                 </StyledHeader>
                 {allCategoryImages.map(item => (
-                  <ImageCart
-                    key={item.id}
-                    id={item.id}
-                    imageUrl={item.webformatURL}
-                    title={item.tags}
-                  />
+                  <ImageCart key={item.id} id={item.id} imageUrl={item.webformatURL} />
                 ))}
               </StyledImagesWrapper>
             )}
           </StyledContentWrapper>
           <NavigationWrapper>
-            <PageNavigation currentCategory={match.params.query} pageNumber={queryString.parse(location.search).page}/>
+            <PageNavigation
+              currentCategory={match.params.query}
+              pageNumber={queryString.parse(location.search).page}
+            />
           </NavigationWrapper>
         </StyledWrapper>
       )}
@@ -199,7 +196,11 @@ interface LinkStateProps {
 
 interface LinkDispatchProps {
   setQuery: (query: string) => void;
-  fetchAllQueryImages: (query: string, page: string[] | string | null | undefined) => void;
+  fetchAllQueryImages: (
+    query: string,
+    page: string[] | string | null | undefined,
+    perPage: number | string
+  ) => void;
 }
 
 const mapStateToProps = ({

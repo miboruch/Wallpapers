@@ -2,36 +2,25 @@ import React from 'react';
 import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-const StyledWrapper = styled.div<WrapperProps>`
+const StyledImage = styled.img`
   width: calc(100% / 3);
   height: 200px;
   position: relative;
-  background-image: url(${({ imageUrl }) => imageUrl});
-  background-size: cover;
+  object-fit: cover;
   overflow: hidden;
   border: 2px solid #f2f2f2;
   cursor: pointer;
 `;
 
-interface WrapperProps {
-  imageUrl: string;
-  title: string;
-}
-
-interface Props extends WrapperProps {
+interface Props {
   id: number;
+  imageUrl: string;
 }
 
 type ConnectedProps = RouteComponentProps<any> & Props;
 
-const ImageCart: React.FC<ConnectedProps> = ({ imageUrl, title, id, history }) => {
-  return (
-    <StyledWrapper
-      imageUrl={imageUrl}
-      title={title}
-      onClick={() => history.push(`/photo-page/${id}`)}
-    />
-  );
+const ImageCart: React.FC<ConnectedProps> = ({ imageUrl, id, history }) => {
+  return <StyledImage src={imageUrl} onClick={() => history.push(`/photo-page/${id}`)} />;
 };
 
 export default withRouter(ImageCart);

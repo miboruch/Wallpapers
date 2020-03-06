@@ -8,13 +8,14 @@ import CurrentSlideContextProvider from './providers/CurrentSlideContext';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppActions } from './types/actionTypes';
 import { bindActionCreators } from 'redux';
-import { fetchCategoryImages } from './actions/categoryImagesAction';
+import { fetchAllCategoryImages, fetchCategoryImages } from './actions/categoryImagesAction';
 import PhotosPage from './pages/PhotosPage';
 import SearchContextProvider from './providers/SearchContext';
 
-const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
+const App: React.FC<LinkDispatchProps> = ({ fetchCategory, fetchAllQueryImages }) => {
   useEffect(() => {
     fetchCategory();
+    fetchAllQueryImages('Nature', '1', 3);
   }, []);
 
   return (
@@ -35,11 +36,17 @@ const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
 
 interface LinkDispatchProps {
   fetchCategory: () => void;
+  fetchAllQueryImages: (
+    query: string,
+    page: string[] | string | null | undefined,
+    perPage: number | string
+  ) => void;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
   return {
-    fetchCategory: bindActionCreators(fetchCategoryImages, dispatch)
+    fetchCategory: bindActionCreators(fetchCategoryImages, dispatch),
+    fetchAllQueryImages: bindActionCreators(fetchAllCategoryImages, dispatch)
   };
 };
 
