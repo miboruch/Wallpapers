@@ -28,7 +28,7 @@ const StyledWrapper = styled.div<WrapperBackgroundProps>`
   ${({ theme }) => theme.mq.standard} {
     min-height: 0;
     height: 100vh;
-    background-image: url(${({ imageUrl }) => imageUrl});
+    background-image: url(${({ imageUrl }) => (imageUrl ? imageUrl : null)});
     background-color: rgba(0, 0, 0, 0.3);
     background-blend-mode: darken;
     backdrop-filter: blur(10px);
@@ -143,10 +143,8 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   history
 }) => {
   useEffect(() => {
-    if (match.params.query !== query) {
-      setQuery(reverseSlugify(match.params.query));
-      fetchAllQueryImages(match.params.query, queryString.parse(location.search).page, 3);
-    }
+    setQuery(reverseSlugify(match.params.query));
+    fetchAllQueryImages(match.params.query, queryString.parse(location.search).page, 3);
   }, [match.params.query]);
 
   return (

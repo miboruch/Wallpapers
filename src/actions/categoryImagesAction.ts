@@ -13,7 +13,7 @@ import {
 import { categoryQueries } from '../utils/imagesCategories';
 import { API_URL } from '../utils/constants';
 
-const fetchStart = (): AppActions => {
+export const fetchStart = (): AppActions => {
   return {
     type: FETCH_START
   };

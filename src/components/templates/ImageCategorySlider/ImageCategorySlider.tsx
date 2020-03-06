@@ -9,6 +9,10 @@ import ImageContent from '../../molecules/ImageContent/ImageContent';
 import { SliderContext } from '../../../providers/CurrentSlideContext';
 import backIcon from '../../../assets/icons/back.svg';
 import { Link } from 'react-router-dom';
+import { ThunkDispatch } from 'redux-thunk';
+import { AppActions } from '../../../types/actionTypes';
+import { bindActionCreators } from 'redux';
+import { fetchStart } from '../../../actions/categoryImagesAction';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -70,14 +74,14 @@ const StyledIconLeft = styled(StyledIconRight)`
 
 interface Props {}
 
-type ConnectedProps = Props & LinkStateProps;
+type ConnectedProps = Props & LinkStateProps & LinkDispatchProps;
 
 enum SliderAction {
   next = 'next',
   prev = 'prev'
 }
 
-const ImageCategorySlider: React.FC<ConnectedProps> = ({ categoryImages }) => {
+const ImageCategorySlider: React.FC<ConnectedProps> = ({ categoryImages, fetchStart }) => {
   const { currentSlide, setSlide }: any = useContext(SliderContext);
   const sliderRef = useRef<Slider>(null);
 
@@ -119,7 +123,7 @@ const ImageCategorySlider: React.FC<ConnectedProps> = ({ categoryImages }) => {
         <StyledIconRight src={backIcon} onClick={() => slide(SliderAction.next)} />
       </NavigationWrapper>
       <Link to={`/photos-page/${categoryImages[currentSlide].title}?page=1`}>
-        <ButtonWrapper>
+        <ButtonWrapper onClick={() => fetchStart()}>
           <Button text={`Open ${categoryImages[currentSlide].title} images`} />
         </ButtonWrapper>
       </Link>
@@ -131,10 +135,20 @@ interface LinkStateProps {
   categoryImages: any[];
 }
 
+interface LinkDispatchProps {
+  fetchStart: () => any;
+}
+
 const mapStateToProps = ({
   categoryImagesReducer: { categoryImages }
 }: AppState): LinkStateProps => {
   return { categoryImages };
 };
 
-export default connect(mapStateToProps)(ImageCategorySlider);
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
+  return {
+    fetchStart: bindActionCreators(fetchStart, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImageCategorySlider);
