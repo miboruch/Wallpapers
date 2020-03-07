@@ -5,23 +5,14 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { API_URL } from '../utils/constants';
 import Spinner from '../components/atoms/Spinner/Spinner';
-import BackButton from '../components/atoms/BackButton/BackButton';
 import { AppState } from '../reducers/rootReducer';
+import ProjectIcons from '../components/molecules/ProjectIcons/ProjectIcons';
 
 const StyledWrapper = styled.div`
   width: 100%;
   height: 100vh;
   position: relative;
   background-color: #2d2d2d;
-`;
-
-const ButtonWrapper = styled.div`
-  width: 70px;
-  height: 70px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 100;
 `;
 
 const StyledImage = styled.img`
@@ -56,7 +47,7 @@ const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
         } = await axios.get(
           `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&id=${match.params.id}`
         );
-
+        console.log(hits);
         setCurrentPhoto(hits);
       } catch (error) {
         setLoadError(error);
@@ -72,13 +63,12 @@ const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
         <>
           {currentPhoto ? (
             <>
-              <ButtonWrapper
-                onClick={(): void =>
+              <ProjectIcons
+                onBackClick={(): void =>
                   query ? history.push(`/photos-page/${query}?page=1`) : history.push('/')
                 }
-              >
-                <BackButton />
-              </ButtonWrapper>
+                onHeartClick={() => {}}
+              />
               <StyledImage src={currentPhoto[0].largeImageURL} />
             </>
           ) : (

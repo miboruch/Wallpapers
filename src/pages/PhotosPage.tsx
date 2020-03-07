@@ -10,9 +10,9 @@ import { fetchAllCategoryImages, setCurrentQuery } from '../actions/categoryImag
 import { reverseSlugify } from '../utils/functions';
 import { AppState } from '../reducers/rootReducer';
 import ImageCart from '../components/molecules/ImageCart/ImageCart';
-import BackButton from '../components/atoms/BackButton/BackButton';
 import Spinner from '../components/atoms/Spinner/Spinner';
 import PageNavigation from '../components/molecules/PageNavigation/PageNavigation';
+import ProjectIcons from '../components/molecules/ProjectIcons/ProjectIcons';
 
 interface WrapperBackgroundProps {
   imageUrl?: string;
@@ -121,15 +121,6 @@ const StyledImagesWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const ButtonWrapper = styled.div`
-  width: 70px;
-  height: 70px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 100;
-`;
-
 type ConnectedProps = RouteComponentProps<any> & LinkDispatchProps & LinkStateProps;
 
 const PhotosPage: React.FC<ConnectedProps> = ({
@@ -139,7 +130,6 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   fetchAllQueryImages,
   allCategoryImages,
   loading,
-  query,
   history
 }) => {
   useEffect(() => {
@@ -153,9 +143,7 @@ const PhotosPage: React.FC<ConnectedProps> = ({
         <Spinner />
       ) : (
         <StyledWrapper imageUrl={allCategoryImages[0].largeImageURL}>
-          <ButtonWrapper onClick={() => history.push('/')}>
-            <BackButton />
-          </ButtonWrapper>
+          <ProjectIcons onBackClick={() => history.push('/')} onHeartClick={() => {}} />
           <StyledContent>
             <StyledTitle>{match.params.query}</StyledTitle>
             <StyledParagraph>choose a photo</StyledParagraph>

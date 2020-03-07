@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { ReactSVG } from 'react-svg';
 import backIcon from '../../../assets/icons/back.svg';
 
-interface Props {}
-
 const StyledWrapper = styled.div`
   width: 60px;
   height: 60px;
@@ -28,9 +26,13 @@ const StyledIcon = styled(ReactSVG)`
   transform: translateX(-3px) rotate(180deg);
 `;
 
-const BackButton: React.FC<Props> = () => {
+interface Props {
+  onClick: () => void;
+}
+
+const BackButton: React.FC<Props> = ({ onClick }) => {
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={onClick}>
       <StyledIcon src={backIcon} />
     </StyledWrapper>
   );
