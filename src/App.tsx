@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import { fetchCategoryImages } from './actions/categoryImagesAction';
 import PhotosPage from './pages/PhotosPage';
 import SearchContextProvider from './providers/SearchContext';
+import PhotoPage from './pages/PhotoPage';
 
 const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
   useEffect(() => {
@@ -25,6 +26,7 @@ const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
             <Switch>
               <Route path='/' exact component={LandingPage} />
               <Route path='/photos-page/:query' exact component={PhotosPage} />
+              <Route path='/photo-page/:id' exact component={PhotoPage} />
             </Switch>
           </Router>
         </Layout>

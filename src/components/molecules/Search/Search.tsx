@@ -9,7 +9,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import CloseButton from '../../atoms/CloseButton/CloseButton';
 import { SearchContext } from '../../../providers/SearchContext';
 import { AppActions } from '../../../types/actionTypes';
-import { setCurrentQuery } from '../../../actions/categoryImagesAction';
+import { fetchStart, setCurrentQuery } from '../../../actions/categoryImagesAction';
 import { QuerySchema } from '../../../utils/schemaValidation';
 
 interface OpenProps {
@@ -117,7 +117,7 @@ interface DefaultFormValue {
 
 type ConnectedProps = Props & LinkDispatchProps;
 
-const Search: React.FC<ConnectedProps> = ({ setQuery, history }) => {
+const Search: React.FC<ConnectedProps> = ({ setQuery, history, fetchStart }) => {
   const initialValue: DefaultFormValue = { query: '' };
   const { isOpen, setBoxState } = useContext(SearchContext);
 
@@ -127,6 +127,7 @@ const Search: React.FC<ConnectedProps> = ({ setQuery, history }) => {
       <Formik
         initialValues={initialValue}
         onSubmit={({ query }) => {
+          fetchStart();
           setQuery(query);
           history.push(`/photos-page/${slugify(query)}?page=1`);
         }}
@@ -156,11 +157,13 @@ const Search: React.FC<ConnectedProps> = ({ setQuery, history }) => {
 
 interface LinkDispatchProps {
   setQuery: (query: string) => void;
+  fetchStart: () => void;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
   return {
-    setQuery: bindActionCreators(setCurrentQuery, dispatch)
+    setQuery: bindActionCreators(setCurrentQuery, dispatch),
+    fetchStart: bindActionCreators(fetchStart, dispatch)
   };
 };
 

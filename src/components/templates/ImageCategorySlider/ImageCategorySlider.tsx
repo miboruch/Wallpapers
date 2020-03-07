@@ -119,8 +119,8 @@ const ImageCategorySlider: React.FC<ConnectedProps> = ({ categoryImages, fetchSt
         ))}
       </StyledSlider>
       <NavigationWrapper>
-        <StyledIconLeft src={backIcon} onClick={() => slide(SliderAction.prev)} />
-        <StyledIconRight src={backIcon} onClick={() => slide(SliderAction.next)} />
+        <StyledIconLeft src={backIcon} onClick={(): void => slide(SliderAction.prev)} />
+        <StyledIconRight src={backIcon} onClick={(): void => slide(SliderAction.next)} />
       </NavigationWrapper>
       <Link to={`/photos-page/${categoryImages[currentSlide].title}?page=1`}>
         <ButtonWrapper onClick={() => fetchStart()}>
