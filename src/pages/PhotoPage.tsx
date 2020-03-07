@@ -123,6 +123,33 @@ const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
     })();
   }, []);
 
+  useEffect(() => {}, [localStorage]);
+
+  const saveImage = (id: string): void => {
+    let liked: any[];
+    const storedLocal: string | null = localStorage.getItem('liked');
+
+    if (storedLocal) {
+      liked = JSON.parse(storedLocal);
+      localStorage.removeItem('liked');
+    } else {
+      liked = [];
+    }
+
+    liked.push(id);
+    localStorage.setItem('liked', JSON.stringify(liked));
+  };
+
+  const removeSavedImage = (id: string): void => {
+    const storedLikedImages: string | null = localStorage.getItem('liked');
+    if (storedLikedImages) {
+      const updatedCart: string[] = JSON.parse(storedLikedImages).filter(
+        (item: string) => item !== id
+      );
+      localStorage.setItem('liked', JSON.stringify(updatedCart));
+    }
+  };
+
   return (
     <StyledWrapper>
       {loadError ? (
@@ -148,7 +175,21 @@ const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
                   <StyledOpenParagraph>Open this image on Pixabay.com</StyledOpenParagraph>
                 </StyledLink>
                 <IconFlexWrapper>
-                  <StyledIcon src={heart} isSaved={isSaved} onClick={() => setSaved(!isSaved)} />
+                  <StyledIcon
+                    src={heart}
+                    isSaved={isSaved}
+                    onClick={
+                      isSaved
+                        ? () => {
+                            removeSavedImage(match.params.id);
+                            setSaved(false);
+                          }
+                        : () => {
+                            saveImage(match.params.id);
+                            setSaved(true);
+                          }
+                    }
+                  />
                   <StyledParagraph>
                     {isSaved ? 'Unlike this photo' : 'Save in liked photos'}
                   </StyledParagraph>

@@ -14,6 +14,10 @@ import SearchContextProvider from './providers/SearchContext';
 import PhotoPage from './pages/PhotoPage';
 
 const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
+  if (!localStorage.getItem('liked')) {
+    localStorage.setItem('liked', JSON.stringify([]));
+  }
+
   useEffect(() => {
     fetchCategory();
   }, []);
