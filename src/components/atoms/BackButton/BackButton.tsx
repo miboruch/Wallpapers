@@ -7,7 +7,8 @@ const StyledWrapper = styled.div`
   width: 60px;
   height: 60px;
   border-bottom-left-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
 
   display: flex;
   justify-content: center;

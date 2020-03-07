@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { API_URL } from '../utils/constants';
-import Spinner from '../components/atoms/Spinner/Spinner';
 import { AppState } from '../reducers/rootReducer';
+import Spinner from '../components/atoms/Spinner/Spinner';
 import ProjectIcons from '../components/molecules/ProjectIcons/ProjectIcons';
+import { ReactSVG } from 'react-svg';
+import heart from '../assets/icons/heart.svg';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -31,6 +33,70 @@ const StyledImage = styled.img`
   }
 `;
 
+const StyledContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 3rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(1px);
+
+  ${({ theme }) => theme.mq.standard} {
+    width: 35%;
+    top: 50%;
+    bottom: auto;
+    left: auto;
+    right: 0;
+    transform: translateY(-50%);
+  }
+`;
+
+const StyledTitle = styled.h1`
+  font-size: 52px;
+  font-family: ${({ theme }) => theme.font.family.avanti};
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+`;
+
+const StyledParagraph = styled.p`
+  font-size: 14px;
+  letter-spacing: 1px;
+
+  ${({ theme }) => theme.mq.standard} {
+    font-size: 16px;
+  }
+`;
+
+const StyledOpenParagraph = styled(StyledParagraph)`
+  margin-top: 2rem;
+`;
+
+const StyledLink = styled.a`
+  color: #fff;
+`;
+
+const IconFlexWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 2rem;
+`;
+
+interface IconProps {
+  isSaved: boolean;
+}
+
+const StyledIcon = styled(ReactSVG)<IconProps>`
+  fill: ${({ isSaved }) => (isSaved ? '#cb6e61' : '#fff')};
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  margin-right: 2rem;
+`;
+
 interface Props {}
 
 type ConnectedProps = Props & RouteComponentProps<any> & LinkStateProps;
@@ -38,6 +104,8 @@ type ConnectedProps = Props & RouteComponentProps<any> & LinkStateProps;
 const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
   const [currentPhoto, setCurrentPhoto] = useState<any[] | undefined>(undefined);
   const [loadError, setLoadError] = useState<string | null>(null);
+
+  const [isSaved, setSaved] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -70,6 +138,22 @@ const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
                 onHeartClick={() => {}}
               />
               <StyledImage src={currentPhoto[0].largeImageURL} />
+              <StyledContentWrapper>
+                <StyledTitle>{currentPhoto[0].tags}</StyledTitle>
+                <StyledParagraph>
+                  Likes: {isSaved ? parseInt(currentPhoto[0].likes) + 1 : currentPhoto[0].likes}
+                </StyledParagraph>
+                <StyledParagraph>Comments: {currentPhoto[0].comments}</StyledParagraph>
+                <StyledLink href={currentPhoto[0].pageURL} download='true'>
+                  <StyledOpenParagraph>Open this image on Pixabay.com</StyledOpenParagraph>
+                </StyledLink>
+                <IconFlexWrapper>
+                  <StyledIcon src={heart} isSaved={isSaved} onClick={() => setSaved(!isSaved)} />
+                  <StyledParagraph>
+                    {isSaved ? 'Unlike this photo' : 'Save in liked photos'}
+                  </StyledParagraph>
+                </IconFlexWrapper>
+              </StyledContentWrapper>
             </>
           ) : (
             <Spinner />
