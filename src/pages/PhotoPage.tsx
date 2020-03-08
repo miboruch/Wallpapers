@@ -107,6 +107,13 @@ const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
 
   const [isSaved, setSaved] = useState<boolean>(false);
 
+  // const loadLikedImages = (): string[] => {
+  //   const storedLocal: string | null = localStorage.getItem('liked');
+  //   if (storedLocal) {
+  //     return JSON.parse(storedLocal);
+  //   }
+  // };
+
   useEffect(() => {
     (async () => {
       try {

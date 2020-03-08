@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ReactSVG } from 'react-svg';
 import heart from '../../../assets/icons/heart.svg';
 import BackButton from '../../atoms/BackButton/BackButton';
+import { SavedImagesContext } from '../../../providers/SavedImagesContext';
 
 const ButtonWrapper = styled.div`
   width: 60px;
@@ -34,9 +35,11 @@ interface Props {
 }
 
 const ProjectIcons: React.FC<Props> = ({ onBackClick, onHeartClick }) => {
+  const { setOpen } = useContext(SavedImagesContext);
+
   return (
     <IconWrapper>
-      <ButtonWrapper onClick={onHeartClick}>
+      <ButtonWrapper onClick={() => setOpen()}>
         <StyledIcon src={heart} />
       </ButtonWrapper>
       <ButtonWrapper>
