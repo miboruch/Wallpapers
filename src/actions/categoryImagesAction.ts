@@ -3,6 +3,7 @@ import slugify from 'slugify';
 import { Dispatch } from 'redux';
 import { AppActions } from '../types/actionTypes'; /* All possible actions */
 import {
+  CategoryImagesActionTypes,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_ERROR,
   FETCH_IMAGES_SUCCESS,
@@ -13,41 +14,41 @@ import {
 import { categoryQueries } from '../utils/imagesCategories';
 import { API_URL } from '../utils/constants';
 
-export const fetchStart = (): AppActions => {
+export const fetchStart = (): CategoryImagesActionTypes => {
   return {
     type: FETCH_START
   };
 };
 
-export const setCurrentQuery = (query: string): AppActions => {
+export const setCurrentQuery = (query: string): CategoryImagesActionTypes => {
   return {
     type: SET_CURRENT_QUERY,
     payload: query
   };
 };
 
-const fetchCategoriesSuccess = (result: any[]): AppActions => {
+const fetchCategoriesSuccess = (result: any[]): CategoryImagesActionTypes => {
   return {
     type: FETCH_CATEGORIES_SUCCESS,
     payload: result
   };
 };
 
-const fetchImagesSuccess = (result: any[]): AppActions => {
+const fetchImagesSuccess = (result: any[]): CategoryImagesActionTypes => {
   return {
     type: FETCH_IMAGES_SUCCESS,
     payload: result
   };
 };
 
-const setTotalImages = (allImages: number): AppActions => {
+const setTotalImages = (allImages: number): CategoryImagesActionTypes => {
   return {
     type: SET_TOTAL_IMAGES,
     payload: allImages
   };
 };
 
-const fetchError = (error: string): AppActions => {
+const fetchError = (error: string): CategoryImagesActionTypes => {
   return {
     type: FETCH_ERROR,
     error
@@ -96,3 +97,4 @@ export const fetchAllCategoryImages = (
     dispatch(fetchError(error));
   }
 };
+

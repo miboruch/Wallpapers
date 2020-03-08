@@ -13,6 +13,7 @@ import ImageCart from '../components/molecules/ImageCart/ImageCart';
 import Spinner from '../components/atoms/Spinner/Spinner';
 import PageNavigation from '../components/molecules/PageNavigation/PageNavigation';
 import ProjectIcons from '../components/molecules/ProjectIcons/ProjectIcons';
+import SavedImagesTemplate from '../components/templates/SavedImagesTemplate/SavedImagesTemplate';
 
 interface WrapperBackgroundProps {
   imageUrl?: string;
@@ -138,7 +139,7 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   }, [match.params.query]);
 
   return (
-    <>
+    <SavedImagesTemplate>
       {loading ? (
         <Spinner />
       ) : (
@@ -170,7 +171,7 @@ const PhotosPage: React.FC<ConnectedProps> = ({
           </NavigationWrapper>
         </StyledWrapper>
       )}
-    </>
+    </SavedImagesTemplate>
   );
 };
 

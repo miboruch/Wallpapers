@@ -12,9 +12,9 @@ import { fetchCategoryImages } from './actions/categoryImagesAction';
 import PhotosPage from './pages/PhotosPage';
 import SearchContextProvider from './providers/SearchContext';
 import PhotoPage from './pages/PhotoPage';
-import SavedImagesContextProvider from './providers/SavedImagesContext';
+import { fetchSavedSuccess, loadLikedImages } from './actions/savedImagesAction';
 
-const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
+const App: React.FC<LinkDispatchProps> = ({ fetchCategory, fetchSavedSuccess }) => {
   if (!localStorage.getItem('liked')) {
     localStorage.setItem('liked', JSON.stringify([]));
   }
@@ -23,20 +23,22 @@ const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
     fetchCategory();
   }, []);
 
+  useEffect(() => {
+    fetchSavedSuccess(loadLikedImages());
+  }, []);
+
   return (
     <CurrentSlideContextProvider>
       <SearchContextProvider>
-        <SavedImagesContextProvider>
-          <Layout>
-            <Router>
-              <Switch>
-                <Route path='/' exact component={LandingPage} />
-                <Route path='/photos-page/:query' exact component={PhotosPage} />
-                <Route path='/photo-page/:id' exact component={PhotoPage} />
-              </Switch>
-            </Router>
-          </Layout>
-        </SavedImagesContextProvider>
+        <Layout>
+          <Router>
+            <Switch>
+              <Route path='/' exact component={LandingPage} />
+              <Route path='/photos-page/:query' exact component={PhotosPage} />
+              <Route path='/photo-page/:id' exact component={PhotoPage} />
+            </Switch>
+          </Router>
+        </Layout>
       </SearchContextProvider>
     </CurrentSlideContextProvider>
   );
@@ -44,11 +46,13 @@ const App: React.FC<LinkDispatchProps> = ({ fetchCategory }) => {
 
 interface LinkDispatchProps {
   fetchCategory: () => void;
+  fetchSavedSuccess: (values: any[]) => void;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
   return {
-    fetchCategory: bindActionCreators(fetchCategoryImages, dispatch)
+    fetchCategory: bindActionCreators(fetchCategoryImages, dispatch),
+    fetchSavedSuccess: bindActionCreators(fetchSavedSuccess, dispatch)
   };
 };
 

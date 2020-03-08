@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { API_URL } from '../utils/constants';
 import { AppState } from '../reducers/rootReducer';
@@ -9,6 +10,10 @@ import Spinner from '../components/atoms/Spinner/Spinner';
 import ProjectIcons from '../components/molecules/ProjectIcons/ProjectIcons';
 import { ReactSVG } from 'react-svg';
 import heart from '../assets/icons/heart.svg';
+import SavedImagesTemplate from '../components/templates/SavedImagesTemplate/SavedImagesTemplate';
+import { removeSavedImage, saveImage } from '../actions/savedImagesAction';
+import { ThunkDispatch } from 'redux-thunk';
+import { AppActions } from '../types/actionTypes';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -99,20 +104,20 @@ const StyledIcon = styled(ReactSVG)<IconProps>`
 
 interface Props {}
 
-type ConnectedProps = Props & RouteComponentProps<any> & LinkStateProps;
+type ConnectedProps = Props & RouteComponentProps<any> & LinkStateProps & LinkDispatchProps;
 
-const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
+const PhotoPage: React.FC<ConnectedProps> = ({
+  history,
+  match,
+  query,
+  savedImages,
+  loading,
+  saveImage,
+  removeSavedImage
+}) => {
   const [currentPhoto, setCurrentPhoto] = useState<any[] | undefined>(undefined);
   const [loadError, setLoadError] = useState<string | null>(null);
-
   const [isSaved, setSaved] = useState<boolean>(false);
-
-  // const loadLikedImages = (): string[] => {
-  //   const storedLocal: string | null = localStorage.getItem('liked');
-  //   if (storedLocal) {
-  //     return JSON.parse(storedLocal);
-  //   }
-  // };
 
   useEffect(() => {
     (async () => {
@@ -122,7 +127,7 @@ const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
         } = await axios.get(
           `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&id=${match.params.id}`
         );
-        console.log(hits);
+
         setCurrentPhoto(hits);
       } catch (error) {
         setLoadError(error);
@@ -130,96 +135,90 @@ const PhotoPage: React.FC<ConnectedProps> = ({ history, match, query }) => {
     })();
   }, []);
 
-  useEffect(() => {}, [localStorage]);
-
-  const saveImage = (id: string): void => {
-    let liked: any[];
-    const storedLocal: string | null = localStorage.getItem('liked');
-
-    if (storedLocal) {
-      liked = JSON.parse(storedLocal);
-      localStorage.removeItem('liked');
-    } else {
-      liked = [];
-    }
-
-    liked.push(id);
-    localStorage.setItem('liked', JSON.stringify(liked));
-  };
-
-  const removeSavedImage = (id: string): void => {
-    const storedLikedImages: string | null = localStorage.getItem('liked');
-    if (storedLikedImages) {
-      const updatedCart: string[] = JSON.parse(storedLikedImages).filter(
-        (item: string) => item !== id
-      );
-      localStorage.setItem('liked', JSON.stringify(updatedCart));
-    }
-  };
+  useEffect(() => {
+    setSaved(savedImages.filter(item => item === match.params.id).length > 0);
+  }, [savedImages]);
 
   return (
-    <StyledWrapper>
-      {loadError ? (
-        <p>There was a problem with loading this image</p>
-      ) : (
-        <>
-          {currentPhoto ? (
-            <>
-              <ProjectIcons
-                onBackClick={(): void =>
-                  query ? history.push(`/photos-page/${query}?page=1`) : history.push('/')
-                }
-                onHeartClick={() => {}}
-              />
-              <StyledImage src={currentPhoto[0].largeImageURL} />
-              <StyledContentWrapper>
-                <StyledTitle>{currentPhoto[0].tags}</StyledTitle>
-                <StyledParagraph>
-                  Likes: {isSaved ? parseInt(currentPhoto[0].likes) + 1 : currentPhoto[0].likes}
-                </StyledParagraph>
-                <StyledParagraph>Comments: {currentPhoto[0].comments}</StyledParagraph>
-                <StyledLink href={currentPhoto[0].pageURL} download='true'>
-                  <StyledOpenParagraph>Open this image on Pixabay.com</StyledOpenParagraph>
-                </StyledLink>
-                <IconFlexWrapper>
-                  <StyledIcon
-                    src={heart}
-                    isSaved={isSaved}
-                    onClick={
-                      isSaved
-                        ? () => {
-                            removeSavedImage(match.params.id);
-                            setSaved(false);
-                          }
-                        : () => {
-                            saveImage(match.params.id);
-                            setSaved(true);
-                          }
-                    }
-                  />
+    <SavedImagesTemplate>
+      <StyledWrapper>
+        {loadError ? (
+          <p>There was a problem with loading this image</p>
+        ) : (
+          <>
+            {currentPhoto ? (
+              <>
+                <ProjectIcons
+                  onBackClick={(): void =>
+                    query ? history.push(`/photos-page/${query}?page=1`) : history.push('/')
+                  }
+                  onHeartClick={() => {}}
+                />
+                <StyledImage src={currentPhoto[0].largeImageURL} />
+                <StyledContentWrapper>
+                  <StyledTitle>{currentPhoto[0].tags}</StyledTitle>
                   <StyledParagraph>
-                    {isSaved ? 'Unlike this photo' : 'Save in liked photos'}
+                    Likes: {isSaved ? parseInt(currentPhoto[0].likes) + 1 : currentPhoto[0].likes}
                   </StyledParagraph>
-                </IconFlexWrapper>
-              </StyledContentWrapper>
-            </>
-          ) : (
-            <Spinner />
-          )}
-        </>
-      )}
-    </StyledWrapper>
+                  <StyledParagraph>Comments: {currentPhoto[0].comments}</StyledParagraph>
+                  <StyledLink href={currentPhoto[0].pageURL} download='true'>
+                    <StyledOpenParagraph>Open this image on Pixabay.com</StyledOpenParagraph>
+                  </StyledLink>
+                  <IconFlexWrapper>
+                    <StyledIcon
+                      src={heart}
+                      isSaved={isSaved}
+                      onClick={
+                        isSaved
+                          ? () => {
+                              removeSavedImage(match.params.id);
+                            }
+                          : () => {
+                              saveImage(match.params.id);
+                            }
+                      }
+                    />
+                    <StyledParagraph>
+                      {isSaved ? 'Unlike this photo' : 'Save in liked photos'}
+                    </StyledParagraph>
+                  </IconFlexWrapper>
+                </StyledContentWrapper>
+              </>
+            ) : (
+              <Spinner />
+            )}
+          </>
+        )}
+      </StyledWrapper>
+    </SavedImagesTemplate>
   );
 };
 
 interface LinkStateProps {
   query: string | null;
+  savedImages: any[];
+  loading: boolean;
 }
 
-const mapStateToProps = ({ categoryImagesReducer: { query } }: AppState): LinkStateProps => {
-  return { query };
+interface LinkDispatchProps {
+  saveImage: (id: string | number) => void;
+  removeSavedImage: (id: string | number) => void;
+}
+
+const mapStateToProps = ({
+  categoryImagesReducer: { query },
+  savedImagesReducer: { savedImages, loading }
+}: AppState): LinkStateProps => {
+  return { query, savedImages, loading };
+};
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
+  return {
+    saveImage: bindActionCreators(saveImage, dispatch),
+    removeSavedImage: bindActionCreators(removeSavedImage, dispatch)
+  };
 };
 
 const PhotoPageWithRouter = withRouter(PhotoPage);
 
-export default connect(mapStateToProps)(PhotoPageWithRouter);
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoPageWithRouter);
