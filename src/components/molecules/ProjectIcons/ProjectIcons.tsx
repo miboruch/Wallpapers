@@ -1,9 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { ReactSVG } from 'react-svg';
-import heart from '../../../assets/icons/heart.svg';
 import BackButton from '../../atoms/BackButton/BackButton';
-import { SavedImagesContext } from '../../../providers/SavedImagesContext';
 import SavedIcon from '../../atoms/SavedIcon/SavedIcon';
 
 const ButtonWrapper = styled.div`

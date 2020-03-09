@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { ReactSVG } from 'react-svg';
 import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
 import { bindActionCreators } from 'redux';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { API_URL } from '../utils/constants';
-import { AppState } from '../reducers/rootReducer';
 import Spinner from '../components/atoms/Spinner/Spinner';
 import ProjectIcons from '../components/molecules/ProjectIcons/ProjectIcons';
-import { ReactSVG } from 'react-svg';
-import heart from '../assets/icons/heart.svg';
-import SavedImagesTemplate from '../components/templates/SavedImagesTemplate/SavedImagesTemplate';
 import { removeSavedImage, saveImage } from '../actions/savedImagesAction';
-import { ThunkDispatch } from 'redux-thunk';
 import { AppActions } from '../types/actionTypes';
 import { SavedImageItem } from '../types/savedImagesTypes';
+import { AppState } from '../reducers/rootReducer';
+import { API_URL } from '../utils/constants';
+import heart from '../assets/icons/heart.svg';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -112,7 +111,6 @@ const PhotoPage: React.FC<ConnectedProps> = ({
   match,
   query,
   savedImages,
-  loading,
   saveImage,
   removeSavedImage
 }) => {
@@ -197,7 +195,6 @@ const PhotoPage: React.FC<ConnectedProps> = ({
 interface LinkStateProps {
   query: string | null;
   savedImages: any[];
-  loading: boolean;
 }
 
 interface LinkDispatchProps {
@@ -207,9 +204,9 @@ interface LinkDispatchProps {
 
 const mapStateToProps = ({
   categoryImagesReducer: { query },
-  savedImagesReducer: { savedImages, loading }
+  savedImagesReducer: { savedImages }
 }: AppState): LinkStateProps => {
-  return { query, savedImages, loading };
+  return { query, savedImages };
 };
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {

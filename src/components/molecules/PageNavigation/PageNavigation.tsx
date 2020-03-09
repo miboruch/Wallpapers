@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
 import { Link } from 'react-router-dom';
 import { AppState } from '../../../reducers/rootReducer';
-import { ThunkDispatch } from 'redux-thunk';
 import { AppActions } from '../../../types/actionTypes';
-import { bindActionCreators } from 'redux';
 import { fetchAllCategoryImages } from '../../../actions/categoryImagesAction';
 
 const StyledWrapper = styled.div`

@@ -1,11 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {
-  text: string;
-  onClick?: (history: any) => void;
-}
-
 const StyledButton = styled.button`
   width: 100%;
   height: 100%;
@@ -20,6 +15,11 @@ const StyledButton = styled.button`
   text-transform: uppercase;
   outline: none;
 `;
+
+interface Props {
+  text: string;
+  onClick?: (history: any) => void;
+}
 
 const Button: React.FC<Props> = ({ text, onClick }) => {
   return (

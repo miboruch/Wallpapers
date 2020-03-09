@@ -17,9 +17,7 @@ const StyledIcon = styled(ReactSVG)`
   height: 25px;
 `;
 
-interface Props {}
-
-const SavedIcon: React.FC<Props> = () => {
+const SavedIcon: React.FC<{}> = () => {
   const { setOpen } = useContext(SavedImagesContext);
   return (
     <ButtonWrapper onClick={() => setOpen()}>

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { AppState } from '../../../reducers/rootReducer';
 import { SavedImagesContext } from '../../../providers/SavedImagesContext';
-import styled from 'styled-components';
 import CloseButton from '../../atoms/CloseButton/CloseButton';
 import ImageCart from '../ImageCart/ImageCart';
 
@@ -62,11 +62,7 @@ const StyledImagesWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-interface Props {}
-
-type ConnectedProps = Props & LinkStateProps;
-
-const SavedImages: React.FC<ConnectedProps> = ({ savedImages }) => {
+const SavedImages: React.FC<LinkStateProps> = ({ savedImages }) => {
   const { isOpen, setBoxState } = useContext(SavedImagesContext);
 
   return (

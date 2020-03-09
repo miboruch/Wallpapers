@@ -2,17 +2,17 @@ import React, { useContext, useRef } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Slider from 'react-slick';
+import { bindActionCreators } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
 import { ReactSVG } from 'react-svg';
+import { Link } from 'react-router-dom';
 import { AppState } from '../../../reducers/rootReducer';
+import { SliderContext } from '../../../providers/CurrentSlideContext';
+import { AppActions } from '../../../types/actionTypes';
+import { fetchStart } from '../../../actions/categoryImagesAction';
 import Button from '../../atoms/Button/Button';
 import ImageContent from '../../molecules/ImageContent/ImageContent';
-import { SliderContext } from '../../../providers/CurrentSlideContext';
 import backIcon from '../../../assets/icons/back.svg';
-import { Link } from 'react-router-dom';
-import { ThunkDispatch } from 'redux-thunk';
-import { AppActions } from '../../../types/actionTypes';
-import { bindActionCreators } from 'redux';
-import { fetchStart } from '../../../actions/categoryImagesAction';
 
 const StyledWrapper = styled.div`
   width: 100%;
