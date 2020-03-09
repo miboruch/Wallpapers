@@ -21,9 +21,7 @@ const Layout: React.FC<Props> = ({ appTheme, children }) => {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <StyledWrapper>
-          {children}
-        </StyledWrapper>
+        <StyledWrapper>{children}</StyledWrapper>
       </ThemeProvider>
     </>
   );

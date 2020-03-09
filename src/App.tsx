@@ -13,6 +13,7 @@ import PhotosPage from './pages/PhotosPage';
 import SearchContextProvider from './providers/SearchContext';
 import PhotoPage from './pages/PhotoPage';
 import { fetchSavedSuccess, loadLikedImages } from './actions/savedImagesAction';
+import SavedImagesTemplate from './components/templates/SavedImagesTemplate/SavedImagesTemplate';
 
 const App: React.FC<LinkDispatchProps> = ({ fetchCategory, fetchSavedSuccess }) => {
   if (!localStorage.getItem('liked')) {
@@ -32,11 +33,13 @@ const App: React.FC<LinkDispatchProps> = ({ fetchCategory, fetchSavedSuccess }) 
       <SearchContextProvider>
         <Layout>
           <Router>
-            <Switch>
-              <Route path='/' exact component={LandingPage} />
-              <Route path='/photos-page/:query' exact component={PhotosPage} />
-              <Route path='/photo-page/:id' exact component={PhotoPage} />
-            </Switch>
+            <SavedImagesTemplate>
+              <Switch>
+                <Route path='/' exact component={LandingPage} />
+                <Route path='/photos-page/:query' exact component={PhotosPage} />
+                <Route path='/photo-page/:id' exact component={PhotoPage} />
+              </Switch>
+            </SavedImagesTemplate>
           </Router>
         </Layout>
       </SearchContextProvider>

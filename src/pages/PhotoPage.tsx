@@ -141,58 +141,56 @@ const PhotoPage: React.FC<ConnectedProps> = ({
   }, [savedImages]);
 
   return (
-    <SavedImagesTemplate>
-      <StyledWrapper>
-        {loadError ? (
-          <p>There was a problem with loading this image</p>
-        ) : (
-          <>
-            {currentPhoto ? (
-              <>
-                <ProjectIcons
-                  onBackClick={(): void =>
-                    query ? history.push(`/photos-page/${query}?page=1`) : history.push('/')
-                  }
-                  onHeartClick={() => {}}
-                />
-                <StyledImage src={currentPhoto[0].largeImageURL} />
-                <StyledContentWrapper>
-                  <StyledTitle>{currentPhoto[0].tags}</StyledTitle>
+    <StyledWrapper>
+      {loadError ? (
+        <p>There was a problem with loading this image</p>
+      ) : (
+        <>
+          {currentPhoto ? (
+            <>
+              <ProjectIcons
+                onBackClick={(): void =>
+                  query ? history.push(`/photos-page/${query}?page=1`) : history.push('/')
+                }
+                isPhotoPage={true}
+              />
+              <StyledImage src={currentPhoto[0].largeImageURL} />
+              <StyledContentWrapper>
+                <StyledTitle>{currentPhoto[0].tags}</StyledTitle>
+                <StyledParagraph>
+                  Likes: {isSaved ? parseInt(currentPhoto[0].likes) + 1 : currentPhoto[0].likes}
+                </StyledParagraph>
+                <StyledParagraph>Comments: {currentPhoto[0].comments}</StyledParagraph>
+                <StyledLink
+                  href={currentPhoto[0].pageURL}
+                  download='true'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <StyledOpenParagraph>Open this image on Pixabay.com</StyledOpenParagraph>
+                </StyledLink>
+                <IconFlexWrapper>
+                  <StyledIcon
+                    src={heart}
+                    isSaved={isSaved}
+                    onClick={
+                      isSaved
+                        ? () => removeSavedImage(match.params.id)
+                        : () => saveImage(match.params.id, currentPhoto[0].webformatURL)
+                    }
+                  />
                   <StyledParagraph>
-                    Likes: {isSaved ? parseInt(currentPhoto[0].likes) + 1 : currentPhoto[0].likes}
+                    {isSaved ? 'Dislike this photo' : 'Save in liked photos'}
                   </StyledParagraph>
-                  <StyledParagraph>Comments: {currentPhoto[0].comments}</StyledParagraph>
-                  <StyledLink
-                    href={currentPhoto[0].pageURL}
-                    download='true'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <StyledOpenParagraph>Open this image on Pixabay.com</StyledOpenParagraph>
-                  </StyledLink>
-                  <IconFlexWrapper>
-                    <StyledIcon
-                      src={heart}
-                      isSaved={isSaved}
-                      onClick={
-                        isSaved
-                          ? () => removeSavedImage(match.params.id)
-                          : () => saveImage(match.params.id, currentPhoto[0].webformatURL)
-                      }
-                    />
-                    <StyledParagraph>
-                      {isSaved ? 'Unlike this photo' : 'Save in liked photos'}
-                    </StyledParagraph>
-                  </IconFlexWrapper>
-                </StyledContentWrapper>
-              </>
-            ) : (
-              <Spinner />
-            )}
-          </>
-        )}
-      </StyledWrapper>
-    </SavedImagesTemplate>
+                </IconFlexWrapper>
+              </StyledContentWrapper>
+            </>
+          ) : (
+            <Spinner />
+          )}
+        </>
+      )}
+    </StyledWrapper>
   );
 };
 

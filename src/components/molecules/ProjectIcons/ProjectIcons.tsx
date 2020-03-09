@@ -4,6 +4,7 @@ import { ReactSVG } from 'react-svg';
 import heart from '../../../assets/icons/heart.svg';
 import BackButton from '../../atoms/BackButton/BackButton';
 import { SavedImagesContext } from '../../../providers/SavedImagesContext';
+import SavedIcon from '../../atoms/SavedIcon/SavedIcon';
 
 const ButtonWrapper = styled.div`
   width: 60px;
@@ -20,28 +21,18 @@ const IconWrapper = styled.section`
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 100;
-`;
-
-const StyledIcon = styled(ReactSVG)`
-  fill: #fff;
-  width: 25px;
-  height: 25px;
+  z-index: 90;
 `;
 
 interface Props {
   onBackClick: () => void;
-  onHeartClick: () => void;
+  isPhotoPage?: boolean;
 }
 
-const ProjectIcons: React.FC<Props> = ({ onBackClick, onHeartClick }) => {
-  const { setOpen } = useContext(SavedImagesContext);
-
+const ProjectIcons: React.FC<Props> = ({ onBackClick, isPhotoPage }) => {
   return (
     <IconWrapper>
-      <ButtonWrapper onClick={() => setOpen()}>
-        <StyledIcon src={heart} />
-      </ButtonWrapper>
+      {isPhotoPage ? null : <SavedIcon />}
       <ButtonWrapper>
         <BackButton onClick={onBackClick} />
       </ButtonWrapper>

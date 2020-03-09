@@ -24,16 +24,15 @@ const StyledWrapper = styled.div<WrapperBackgroundProps>`
   height: 100vh;
   color: #000;
   position: relative;
-  background: none;
+  background-image: url(${({ imageUrl }) => (imageUrl ? imageUrl : null)});
+  background-color: rgba(0, 0, 0, 0.3);
+  background-blend-mode: darken;
+  backdrop-filter: blur(3px);
+  background-size: cover;
 
   ${({ theme }) => theme.mq.standard} {
     min-height: 0;
     height: 100vh;
-    background-image: url(${({ imageUrl }) => (imageUrl ? imageUrl : null)});
-    background-color: rgba(0, 0, 0, 0.3);
-    background-blend-mode: darken;
-    backdrop-filter: blur(10px);
-    background-size: cover;
     color: #fff;
   }
 `;
@@ -79,7 +78,7 @@ const StyledHeader = styled.header`
   border: 2px solid #f2f2f2;
   background: rgba(0, 0, 0, 0.2);
   background-blend-mode: darken;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -139,12 +138,12 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   }, [match.params.query]);
 
   return (
-    <SavedImagesTemplate>
+    <>
       {loading ? (
         <Spinner />
       ) : (
         <StyledWrapper imageUrl={allCategoryImages[0].largeImageURL}>
-          <ProjectIcons onBackClick={() => history.push('/')} onHeartClick={() => {}} />
+          <ProjectIcons onBackClick={() => history.push('/')} />
           <StyledContent>
             <StyledTitle>{match.params.query}</StyledTitle>
             <StyledParagraph>choose a photo</StyledParagraph>
@@ -171,7 +170,7 @@ const PhotosPage: React.FC<ConnectedProps> = ({
           </NavigationWrapper>
         </StyledWrapper>
       )}
-    </SavedImagesTemplate>
+    </>
   );
 };
 

@@ -9,6 +9,8 @@ import { SliderContext } from '../providers/CurrentSlideContext';
 import { categoryQueries } from '../utils/imagesCategories';
 import { SearchContext } from '../providers/SearchContext';
 import Search from '../components/molecules/Search/Search';
+import heartIcon from '../assets/icons/heart.svg';
+import { SavedImagesContext } from '../providers/SavedImagesContext';
 
 interface BackgroundImage {
   imageUrl?: string;
@@ -76,7 +78,7 @@ const StyledHeader = styled.header`
   justify-content: space-around;
   align-items: center;
   position: fixed;
-  top: 2rem;
+  top: 0;
   left: 0;
   margin-top: 2rem;
   z-index: 2;
@@ -132,6 +134,11 @@ const StyledIcon = styled(ReactSVG)`
   }
 `;
 
+const StyledSavedIcon = styled(StyledIcon)`
+  right: auto;
+  left: 3rem;
+`;
+
 interface ParagraphProps {
   index: number;
   currentSlide: number;
@@ -144,6 +151,7 @@ type ConnectedProps = Props & LinkStateProps;
 const LandingPage: React.FC<ConnectedProps> = ({ loading, categoryImages }) => {
   const { currentSlide } = useContext(SliderContext);
   const { setOpen } = useContext(SearchContext);
+  const { setOpen: setSavedOpen } = useContext(SavedImagesContext);
 
   return (
     <>
@@ -157,6 +165,7 @@ const LandingPage: React.FC<ConnectedProps> = ({ loading, categoryImages }) => {
               <ImageCategorySlider />
               <StyledHeader>
                 <StyledTitle>Choose category</StyledTitle>
+                <StyledSavedIcon src={heartIcon} onClick={() => setSavedOpen()} />
                 <StyledIcon src={searchIcon} onClick={() => setOpen()} />
               </StyledHeader>
             </SliderWrapper>

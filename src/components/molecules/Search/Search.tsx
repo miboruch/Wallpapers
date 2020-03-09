@@ -24,7 +24,7 @@ const StyledWrapper = styled.div<OpenProps>`
   left: 0;
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(5px);
-  z-index: 100;
+  z-index: 110;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,11 +129,12 @@ const Search: React.FC<ConnectedProps> = ({ setQuery, history, fetchStart }) => 
         onSubmit={({ query }) => {
           fetchStart();
           setQuery(query);
+          setBoxState(false);
           history.push(`/photos-page/${slugify(query)}?page=1`);
         }}
         validationSchema={QuerySchema}
       >
-        {({ handleChange, handleBlur, errors, values, setFieldValue }) => (
+        {({ handleChange, handleBlur, errors, values }) => (
           <StyledForm>
             <StyledHeading>Search</StyledHeading>
             <InputLineWrapper>

@@ -15,12 +15,27 @@ const StyledImage = styled.img`
 interface Props {
   id: number;
   imageUrl: string;
+  closeBoxState?: () => void;
 }
 
 type ConnectedProps = RouteComponentProps<any> & Props;
 
-const ImageCart: React.FC<ConnectedProps> = ({ imageUrl, id, history }) => {
-  return <StyledImage src={imageUrl} onClick={() => history.push(`/photo-page/${id}`)} />;
+const ImageCart: React.FC<ConnectedProps> = ({ imageUrl, id, history, closeBoxState }) => {
+  return (
+    <StyledImage
+      src={imageUrl}
+      onClick={
+        closeBoxState
+          ? () => {
+              history.push(`/photo-page/${id}`);
+              closeBoxState();
+            }
+          : () => {
+              history.push(`/photo-page/${id}`);
+            }
+      }
+    />
+  );
 };
 
 export default withRouter(ImageCart);

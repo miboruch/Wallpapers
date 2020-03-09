@@ -9,7 +9,7 @@ interface Props {}
 const SavedImagesTemplate: React.FC<Props> = ({ children }) => {
   return (
     <SavedImagesContextProvider>
-      <SavedImages/>
+      <SavedImages />
       {children}
     </SavedImagesContextProvider>
   );
