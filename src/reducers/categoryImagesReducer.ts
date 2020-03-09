@@ -1,5 +1,6 @@
 import {
   CategoryImagesActionTypes,
+  FETCH_ALL_IMAGES_START,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_ERROR,
   FETCH_IMAGES_SUCCESS,
@@ -10,6 +11,7 @@ import {
 
 interface DefaultState {
   loading: boolean;
+  loadingAll: boolean;
   query: string | null;
   categoryImages: any[];
   allCategoryImages: any[];
@@ -19,6 +21,7 @@ interface DefaultState {
 
 const categoryImagesDefaultState: DefaultState = {
   loading: true,
+  loadingAll: true,
   query: null,
   categoryImages: [],
   allCategoryImages: [],
@@ -36,6 +39,11 @@ export const categoryImagesReducer = (
         ...state,
         loading: true
       };
+    case FETCH_ALL_IMAGES_START:
+      return {
+        ...state,
+        loadingAll: true
+      };
     case SET_CURRENT_QUERY:
       return {
         ...state,
@@ -50,7 +58,7 @@ export const categoryImagesReducer = (
     case FETCH_IMAGES_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loadingAll: false,
         allCategoryImages: action.payload
       };
     case SET_TOTAL_IMAGES:

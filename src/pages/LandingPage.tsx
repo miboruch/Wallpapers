@@ -11,6 +11,7 @@ import { SearchContext } from '../providers/SearchContext';
 import Search from '../components/molecules/Search/Search';
 import heartIcon from '../assets/icons/heart.svg';
 import { SavedImagesContext } from '../providers/SavedImagesContext';
+import Spinner from '../components/atoms/Spinner/Spinner';
 
 interface BackgroundImage {
   imageUrl?: string;
@@ -156,7 +157,7 @@ const LandingPage: React.FC<ConnectedProps> = ({ loading, categoryImages }) => {
   return (
     <>
       {loading ? (
-        <p>Loading...</p>
+        <Spinner/>
       ) : (
         <>
           <Search />
@@ -172,13 +173,6 @@ const LandingPage: React.FC<ConnectedProps> = ({ loading, categoryImages }) => {
             <ContentWrapper>
               <StyledHeading>{categoryImages[currentSlide].title}</StyledHeading>
               <StyledDescription>{categoryImages[currentSlide].description}</StyledDescription>
-              <ParagraphWrapper>
-                {categoryQueries.map((item, index) => (
-                  <StyledParagraph key={index} index={index} currentSlide={currentSlide}>
-                    {item.title}
-                  </StyledParagraph>
-                ))}
-              </ParagraphWrapper>
             </ContentWrapper>
           </StyledWrapper>
         </>

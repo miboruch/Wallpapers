@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { AppActions } from '../types/actionTypes'; /* All possible actions */
 import {
   CategoryImagesActionTypes,
+  FETCH_ALL_IMAGES_START,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_ERROR,
   FETCH_IMAGES_SUCCESS,
@@ -17,6 +18,12 @@ import { API_URL } from '../utils/constants';
 export const fetchStart = (): CategoryImagesActionTypes => {
   return {
     type: FETCH_START
+  };
+};
+
+const fetchAllStart = (): CategoryImagesActionTypes => {
+  return {
+    type: FETCH_ALL_IMAGES_START
   };
 };
 
@@ -55,7 +62,6 @@ const fetchError = (error: string): CategoryImagesActionTypes => {
   };
 };
 
-/* On the landing page -> single image from every single category */
 export const fetchCategoryImages = () => (dispatch: Dispatch<AppActions>) => {
   dispatch(fetchStart());
 
@@ -68,7 +74,6 @@ export const fetchCategoryImages = () => (dispatch: Dispatch<AppActions>) => {
 
       resultObject = [...resultObject, { title, description, hits: hits[0] }];
 
-      /* fix this, not the best way to do it */
       dispatch(fetchCategoriesSuccess(resultObject));
     });
   } catch (error) {
@@ -81,7 +86,7 @@ export const fetchAllCategoryImages = (
   page: string[] | string | number | null | undefined,
   perPage: number | string = 21
 ) => async (dispatch: Dispatch<AppActions>) => {
-  dispatch(fetchStart());
+  dispatch(fetchAllStart());
   const slugifiedQuery = slugify(query);
 
   try {
@@ -89,12 +94,9 @@ export const fetchAllCategoryImages = (
       `${API_URL}/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${slugifiedQuery}&page=${page}&per_page=${perPage}`
     );
 
-    /* change to 21 */
-
     dispatch(setTotalImages(data.totalHits));
     dispatch(fetchImagesSuccess(data.hits));
   } catch (error) {
     dispatch(fetchError(error));
   }
 };
-

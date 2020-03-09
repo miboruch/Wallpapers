@@ -13,7 +13,6 @@ import ImageCart from '../components/molecules/ImageCart/ImageCart';
 import Spinner from '../components/atoms/Spinner/Spinner';
 import PageNavigation from '../components/molecules/PageNavigation/PageNavigation';
 import ProjectIcons from '../components/molecules/ProjectIcons/ProjectIcons';
-import SavedImagesTemplate from '../components/templates/SavedImagesTemplate/SavedImagesTemplate';
 
 interface WrapperBackgroundProps {
   imageUrl?: string;
@@ -129,17 +128,17 @@ const PhotosPage: React.FC<ConnectedProps> = ({
   setQuery,
   fetchAllQueryImages,
   allCategoryImages,
-  loading,
+  loadingAll,
   history
 }) => {
   useEffect(() => {
     setQuery(reverseSlugify(match.params.query));
-    fetchAllQueryImages(match.params.query, queryString.parse(location.search).page, 3);
+    fetchAllQueryImages(match.params.query, queryString.parse(location.search).page, 21);
   }, [match.params.query]);
 
   return (
     <>
-      {loading ? (
+      {loadingAll ? (
         <Spinner />
       ) : (
         <StyledWrapper imageUrl={allCategoryImages[0].largeImageURL}>
@@ -149,18 +148,14 @@ const PhotosPage: React.FC<ConnectedProps> = ({
             <StyledParagraph>choose a photo</StyledParagraph>
           </StyledContent>
           <StyledContentWrapper>
-            {loading ? (
-              <StyledParagraph>Loading...</StyledParagraph>
-            ) : (
-              <StyledImagesWrapper>
-                <StyledHeader>
-                  <StyledHeaderParagraph>{match.params.query}</StyledHeaderParagraph>
-                </StyledHeader>
-                {allCategoryImages.map(item => (
-                  <ImageCart key={item.id} id={item.id} imageUrl={item.webformatURL} />
-                ))}
-              </StyledImagesWrapper>
-            )}
+            <StyledImagesWrapper>
+              <StyledHeader>
+                <StyledHeaderParagraph>{match.params.query}</StyledHeaderParagraph>
+              </StyledHeader>
+              {allCategoryImages.map(item => (
+                <ImageCart key={item.id} id={item.id} imageUrl={item.webformatURL} />
+              ))}
+            </StyledImagesWrapper>
           </StyledContentWrapper>
           <NavigationWrapper>
             <PageNavigation
@@ -176,7 +171,7 @@ const PhotosPage: React.FC<ConnectedProps> = ({
 
 interface LinkStateProps {
   allCategoryImages: any[];
-  loading: boolean;
+  loadingAll: boolean /* Loading all images from one category */;
   query: string | null;
 }
 
@@ -190,9 +185,9 @@ interface LinkDispatchProps {
 }
 
 const mapStateToProps = ({
-  categoryImagesReducer: { allCategoryImages, loading, query }
+  categoryImagesReducer: { allCategoryImages, loadingAll, query }
 }: AppState): LinkStateProps => {
-  return { allCategoryImages, loading, query };
+  return { allCategoryImages, loadingAll, query };
 };
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {

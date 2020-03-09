@@ -67,7 +67,7 @@ const PageNavigation: React.FC<ConnectedProps> = ({
   const hideNext = parseInt(pageNumber) + 1 > Math.ceil(totalImages / 21);
 
   if (prevPage !== page) {
-    fetchAllQueryImages(currentCategory, page, 3);
+    fetchAllQueryImages(currentCategory, page, 21);
     setPrevPage(page);
   }
 

@@ -1,4 +1,5 @@
 export const FETCH_START = 'FETCH_START';
+export const FETCH_ALL_IMAGES_START = 'FETCH_ALL_IMAGES_START';
 export const SET_CURRENT_QUERY = 'SET_CURRENT_QUERY';
 export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
 export const FETCH_IMAGES_SUCCESS = 'FETCH_IMAGES_SUCCESS';
@@ -7,6 +8,10 @@ export const FETCH_ERROR = 'FETCH_ERROR';
 
 export interface FetchStart {
   type: typeof FETCH_START;
+}
+
+export interface FetchAllImagesStart {
+  type: typeof FETCH_ALL_IMAGES_START;
 }
 
 export interface SetCurrentQuery {
@@ -36,6 +41,7 @@ export interface FetchError {
 
 export type CategoryImagesActionTypes =
   | FetchStart
+  | FetchAllImagesStart
   | SetCurrentQuery
   | FetchCategoriesSuccess
   | FetchImagesSuccess
