@@ -31,8 +31,8 @@ interface LinkStateProps {
 
 interface LinkDispatchProps {
   // fetchSavedImages: () => void;
-  saveImage: (id: string | number) => void;
-  removeSavedImage: (id: string | number) => void;
+  saveImage: (id: string, webFormatURL: string) => void;
+  removeSavedImage: (id: string) => void;
 }
 
 const mapStateToProps = ({

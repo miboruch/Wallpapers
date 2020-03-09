@@ -1,10 +1,8 @@
 import {
   ADD_IMAGE,
-  FETCH_ERROR,
   FETCH_SAVED_SUCCESS,
-  FETCH_START,
-  FETCH_STOP,
   REMOVE_IMAGE,
+  SavedImageItem,
   SavedImagesTypes
 } from '../types/savedImagesTypes';
 
@@ -22,25 +20,10 @@ const savedImagesDefaultState: DefaultState = {
 
 export const savedImagesReducer = (state = savedImagesDefaultState, action: SavedImagesTypes) => {
   switch (action.type) {
-    case FETCH_START:
-      return {
-        ...state,
-        loading: false
-      };
     case FETCH_SAVED_SUCCESS:
       return {
         ...state,
         savedImages: action.payload
-      };
-    case FETCH_ERROR:
-      return {
-        ...state,
-        error: action.payload
-      };
-    case FETCH_STOP:
-      return {
-        ...state,
-        loading: false
       };
     case ADD_IMAGE:
       return {
@@ -50,7 +33,7 @@ export const savedImagesReducer = (state = savedImagesDefaultState, action: Save
     case REMOVE_IMAGE:
       return {
         ...state,
-        savedImages: state.savedImages.filter(item => item !== action.payload)
+        savedImages: state.savedImages.filter((item: SavedImageItem) => item.id !== action.payload)
       };
     default:
       return state;

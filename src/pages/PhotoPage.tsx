@@ -14,6 +14,7 @@ import SavedImagesTemplate from '../components/templates/SavedImagesTemplate/Sav
 import { removeSavedImage, saveImage } from '../actions/savedImagesAction';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppActions } from '../types/actionTypes';
+import { SavedImageItem } from '../types/savedImagesTypes';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -136,7 +137,7 @@ const PhotoPage: React.FC<ConnectedProps> = ({
   }, []);
 
   useEffect(() => {
-    setSaved(savedImages.filter(item => item === match.params.id).length > 0);
+    setSaved(savedImages.filter((item: SavedImageItem) => item.id === match.params.id).length > 0);
   }, [savedImages]);
 
   return (
@@ -161,7 +162,12 @@ const PhotoPage: React.FC<ConnectedProps> = ({
                     Likes: {isSaved ? parseInt(currentPhoto[0].likes) + 1 : currentPhoto[0].likes}
                   </StyledParagraph>
                   <StyledParagraph>Comments: {currentPhoto[0].comments}</StyledParagraph>
-                  <StyledLink href={currentPhoto[0].pageURL} download='true'>
+                  <StyledLink
+                    href={currentPhoto[0].pageURL}
+                    download='true'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
                     <StyledOpenParagraph>Open this image on Pixabay.com</StyledOpenParagraph>
                   </StyledLink>
                   <IconFlexWrapper>
@@ -170,12 +176,8 @@ const PhotoPage: React.FC<ConnectedProps> = ({
                       isSaved={isSaved}
                       onClick={
                         isSaved
-                          ? () => {
-                              removeSavedImage(match.params.id);
-                            }
-                          : () => {
-                              saveImage(match.params.id);
-                            }
+                          ? () => removeSavedImage(match.params.id)
+                          : () => saveImage(match.params.id, currentPhoto[0].webformatURL)
                       }
                     />
                     <StyledParagraph>
@@ -201,8 +203,8 @@ interface LinkStateProps {
 }
 
 interface LinkDispatchProps {
-  saveImage: (id: string | number) => void;
-  removeSavedImage: (id: string | number) => void;
+  saveImage: (id: string, webFormatURL: string) => void;
+  removeSavedImage: (id: string) => void;
 }
 
 const mapStateToProps = ({
