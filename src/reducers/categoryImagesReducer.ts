@@ -42,7 +42,7 @@ export const categoryImagesReducer = (
     case FETCH_ALL_IMAGES_START:
       return {
         ...state,
-        loadingAll: true
+        loadingAll: true,
       };
     case SET_CURRENT_QUERY:
       return {
@@ -59,6 +59,7 @@ export const categoryImagesReducer = (
       return {
         ...state,
         loadingAll: false,
+        loading: false,
         allCategoryImages: action.payload
       };
     case SET_TOTAL_IMAGES:
