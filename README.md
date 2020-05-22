@@ -9,9 +9,9 @@ Simple project based on Pixabay API where you can discover new wallpapers.
 - React, Typescript
 
 <p align="center">
-<img src="screenshots/wallpapers_mobile.png.png">
+<img src="screenshots/wallpapers_mobile.png">
 </p>
 
 <p align="center">
-<img src="screenshots/wallpapers_desktop.png.png">
+<img src="screenshots/wallpapers_desktop.png">
 </p>
