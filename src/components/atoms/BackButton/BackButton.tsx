@@ -1,0 +1,42 @@
+import React from 'react';
+import styled from 'styled-components';
+import { ReactSVG } from 'react-svg';
+import backIcon from '../../../assets/icons/back.svg';
+
+const StyledWrapper = styled.div`
+  width: 60px;
+  height: 60px;
+  border-bottom-left-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  ${({ theme }) => theme.mq.standard} {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+`;
+
+const StyledIcon = styled(ReactSVG)`
+  fill: #fff;
+  width: 25px;
+  height: 25px;
+  transform: translateX(-3px) rotate(180deg);
+`;
+
+interface Props {
+  onClick: () => void;
+}
+
+const BackButton: React.FC<Props> = ({ onClick }) => {
+  return (
+    <StyledWrapper onClick={onClick}>
+      <StyledIcon src={backIcon} />
+    </StyledWrapper>
+  );
+};
+
+export default BackButton;
